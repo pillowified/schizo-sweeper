@@ -258,7 +258,7 @@
                     case "Custom":
                         selectedD = 0;
                         dSelection.style.left = "75%";
-                        dData.innerHTML = "<div><h4 id='ad-info'>* maximum of 99 on each</h4>Columns: <input type='number' id='cc' class='cinput'></div><div>Rows: <input type='number' id='rc' class='cinput'></div><div>Mines: <input type='number' id='mc' class='cinput'></div>";
+                        dData.innerHTML = "<div><h4 id='ad-info'>* max: 40 col, 25 row, 99 mine</h4>Columns: <input type='number' id='cc' class='cinput'></div><div>Rows: <input type='number' id='rc' class='cinput'></div><div>Mines: <input type='number' id='mc' class='cinput'></div>";
                         sBox.innerHTML = "yo0";
                         break;
             }
@@ -279,6 +279,11 @@
                 columns: 24,
                 rows: 20,
                 mines: 99
+            },
+            custom: {
+                columns: [2, 40],
+                rows: [2, 25],
+                mines: [1, 99]
             }
         }
 
@@ -310,7 +315,7 @@
             })
         });
 
-        const debugMode = false;
+        const debugMode = true;
         const fullSchizo = false;
         const game = document.body.querySelector("#game");
         let started = false;
@@ -349,6 +354,8 @@
 
         const gamefield = document.body.querySelector("#game-field");
         let levels = ['easy', 'medium', 'hard'];
+        const minValues = [dValues.custom.columns[0], dValues.custom.rows[0], dValues.custom.mines[0]];
+        const maxValues = [dValues.custom.columns[1], dValues.custom.rows[1], dValues.custom.mines[1]];
         let tiles = []
 
         function generateField () {
@@ -357,6 +364,17 @@
                 gamefield.style.gridTemplateColumns = `repeat(${dValues[levels[selectedD - 1]].columns}, 30px)`;
                 gamefield.style.gridTemplateRows = `repeat(${dValues[levels[selectedD - 1]].rows}, 30px)`;
             } else {
+                for (let index = 0; index < 3; index++) {
+                    if (cinputs[index].value < minValues[index]) {
+                        cinputs[index].value = minValues[index];
+                    }
+                    if (cinputs[index].value > maxValues[index]) {
+                        cinputs[index].value = maxValues[index];
+                    }       
+                }
+                if (cinputs[2].value >= cinputs[0].value * cinputs[1].value) {
+                    cinputs[2].value = (cinputs[0].value * cinputs[1].value) - 1;
+                }
                 gamefield.style.gridTemplateColumns = `repeat(${cinputs[0].value}, 30px)`;
                 gamefield.style.gridTemplateRows = `repeat(${cinputs[1].value}, 30px)`;
             }
@@ -378,7 +396,7 @@
 
                         const tileElement = document.createElement('div');
                         tileElement.classList.add('tile');
-                        tileElement.classList.add('unselectable')
+                        tileElement.classList.add('unselectable');
                         tileElement.style.textAlign = "center";
                         tileElement.dataset.id = tile.id;
 
@@ -407,6 +425,8 @@
 
                         const tileElement = document.createElement('div');
                         tileElement.classList.add('tile');
+                        tileElement.classList.add('unselectable');
+                        tileElement.style.textAlign = "center";
                         tileElement.dataset.id = tile.id;
 
                         if ((row + col) % 2 === 0) {
@@ -529,7 +549,7 @@
                 
                 if (tile.isMine) {
                     tile.isMine = false;
-                    const safeTile = tiles.find(t => !t.isMine && !t.isRevealed && !t.isFlagged);
+                    const safeTile = tiles.find(t => !t.isMine && !t.isRevealed && !t.isFlagged && t !== tile);
                     if (safeTile) {
                         safeTile.isMine = true;
                     }
@@ -545,6 +565,8 @@
             if (tile.isMine) {
                 tileElement.classList.add('mine');
                 tileElement.textContent = '💣';
+                started = false;
+                endSequence(false);
                 return;
             }
 
@@ -625,46 +647,57 @@
             countNeighborMines();
         }
 
+        function endSequence (condition) {
+            if (condition) {
+                console.log("YOU WIN");
+            } else {
+                console.log("YOU LOST");
+            }
+        }
+
         gamefield.addEventListener('click', function (event) {
-            if (event.target.classList.contains('tile')) {
-                const clickedTileId = event.target.dataset.id;
-                const clickedTile = tiles.find(t => t.id === clickedTileId);
+            if (started) {
+                if (event.target.classList.contains('tile')) {
+                    const clickedTileId = event.target.dataset.id;
+                    const clickedTile = tiles.find(t => t.id === clickedTileId);
 
-                if (clickedTile.isRevealed || clickedTile.isFlagged) return;
+                    if (clickedTile.isRevealed || clickedTile.isFlagged) return;
 
-                revealTile(event.target, clickedTile, true);
+                    revealTile(event.target, clickedTile, true);
 
-                minesShuffled = false;
+                    minesShuffled = false;
+                }
             }
         });
         
         gamefield.addEventListener('contextmenu', function (event) {
             event.preventDefault();
 
-            if (event.target.classList.contains('tile')) {
+            if (started) {
+                if (event.target.classList.contains('tile')) {
 
-                const clickedTileId = event.target.dataset.id;
-                const clickedTile = tiles.find(t => t.id === clickedTileId);
+                    const clickedTileId = event.target.dataset.id;
+                    const clickedTile = tiles.find(t => t.id === clickedTileId);
 
-                if (!clickedTile.isRevealed) {
+                    if (!clickedTile.isRevealed) {
 
-                    if (clickedTile.isFlagged) {
-                        clickedTile.isFlagged = !clickedTile.isFlagged;
-                        event.target.textContent = "";
-                        event.target.classList.toggle('flagged');
-                        initializeBoard()
-                        flagCount++;
-                    } else {
-                        if (flagCount > 0) {
+                        if (clickedTile.isFlagged) {
                             clickedTile.isFlagged = !clickedTile.isFlagged;
-                            event.target.textContent = "🚩";
+                            event.target.textContent = "";
                             event.target.classList.toggle('flagged');
-                            flagCount--;
+                            initializeBoard()
+                            flagCount++;
+                        } else {
+                            if (flagCount > 0) {
+                                clickedTile.isFlagged = !clickedTile.isFlagged;
+                                event.target.textContent = "🚩";
+                                event.target.classList.toggle('flagged');
+                                flagCount--;
+                            }
                         }
+                        console.log(flagCount);
                     }
-                    console.log(flagCount);
                 }
-
             }
         });
     </script>
