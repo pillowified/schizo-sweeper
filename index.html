@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schizo Sweeper</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="cursor-glow"></div>
+    <div class="bg-stars"></div>
+    <div id="settings-menu-box">
+        <div>
+            <h2 class="unselectable" style="text-shadow: 0.2rem 0.2rem rgba(0, 0, 0, 0.1);">Settings</h2>
+            <div id="settings-menu">
+                <div id="settings-page">
+                    <h3 id="theme-button" class="unselectable">Themes</h3>
+                </div>
+                <div id="themes-container">
+                    <h3 class="unselectable">Themes</h3>
+                    <div id="themes">
+                        <div id="pastel-bg"></div>
+                        <div id="al-bg"></div>
+                        <div id="strawberry-bg"></div>
+                        <div id="arctic-bg"></div>
+                        <div id="space-bg"></div>
+                        <div id="peachy-bg"></div>
+                        <div id="midnight-bg"></div>
+                        <div id="green-bg"></div>
+                        <div id="dream-bg"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" style="position: relative; padding: 8px;" id="settings-cog">
+            <path fill="currentColor" d="m9.25 22l-.4-3.2q-.325-.125-.612-.3t-.563-.375L4.7 19.375l-2.75-4.75l2.575-1.95Q4.5 12.5 4.5 12.338v-.675q0-.163.025-.338L1.95 9.375l2.75-4.75l2.975 1.25q.275-.2.575-.375t.6-.3l.4-3.2h5.5l.4 3.2q.325.125.613.3t.562.375l2.975-1.25l2.75 4.75l-2.575 1.95q.025.175.025.338v.674q0 .163-.05.338l2.575 1.95l-2.75 4.75l-2.95-1.25q-.275.2-.575.375t-.6.3l-.4 3.2zm2.8-6.5q1.45 0 2.475-1.025T15.55 12t-1.025-2.475T12.05 8.5q-1.475 0-2.488 1.025T8.55 12t1.013 2.475T12.05 15.5" />
+        </svg>
+    </div>
+    <button style="position: fixed; display: none;" onclick="darkmode()">
+        Toggle Dark Mode
+    </button>
+    <div id="main">
+        <main>
+            <h1 class="unselectable" id="title">Schizo Sweeper</h1>
+            <div id="selection">
+                <div id="left">
+                    <h2 style="text-align: center; text-shadow: 0.2rem 0.2rem rgba(0, 0, 0, 0.1);" class="unselectable">Difficulty Selection</h2>
+                    <div id="preset">
+                        <div id="difficulties">
+                            <div id="select-box"></div>    
+                            <button id="easy" class="dSelector">Easy</button>
+                            <div class="divider"></div>
+                            <button id="medium" class="dSelector">Medium</button>
+                            <div class="divider"></div>
+                            <button id="hard" class="dSelector">Hard</button>
+                            <div class="divider"></div>
+                            <button id="custom" class="dSelector">Custom</button>
+                        </div>
+                        <h3 id="d-data">
+                            placeholder<br>
+                            lorem<br>
+                            ipsum
+                        </h3>
+                        <button id="start">Start</button>
+                    </div>
+                </div>
+                <div id="right">
+                    <h2 style="text-align: center; text-shadow: 0.2rem 0.2rem rgba(0, 0, 0, 0.1);" class="unselectable">Statistics</h2>
+                    <div id="stat-box">
+
+                    </div>
+                </div>
+            </div>
+        </main>
+        <div id="game">
+            <div id="outer-field">
+                <div id="game-field">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        const bgstars = document.body.querySelector(".bg-stars");
+
+        function createStar() {
+            const star = document.createElement("div");
+            star.classList.add("star");
+            bgstars.appendChild(star);
+
+            star.style.left = `${Math.random() * 100}vw`;
+            star.style.top = `${Math.random() * 100}vh`;
+            star.style.width = star.style.height = `${Math.random() * 2 + 1}px`;
+            star.style.opacity = `${Math.random() * 0.5 + 0.5}`;
+            star.style.animationDelay = `${Math.random() * 2}s`;
+
+            const dx = (Math.random() - 0.5) * 0.05;
+            const dy = (Math.random() - 0.5) * 0.05;
+
+            let x = parseFloat(star.style.left);
+            let y = parseFloat(star.style.top);
+
+            function animate() {
+                x += dx;
+                y += dy;
+
+                if (x < 0 || x > 100 || y < 0 || y > 100) {
+                    x = Math.random() * 100;
+                    y = Math.random() * 100;
+                }
+
+                star.style.left = `${x}vw`;
+                star.style.top = `${y}vh`;
+
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            for (let i = 0; i < 100; i++) {
+                createStar();
+            }
+        });
+
+        const title = document.body.querySelector("#title");
+        
+        function randomFloaty() {
+            const x = (Math.random() - 0.5) * 40;
+            const y = (Math.random() - 0.5) * 40;
+            const rotation = (Math.random() - 0.5) * 10;
+
+            title.style.transform = `translate(${x}px, ${y}px) rotate(${rotation}deg)`;
+        }
+
+        setInterval(randomFloaty, 2000)
+
+        const left = document.body.querySelector("#left");
+        const right = document.body.querySelector("#right");
+
+        function randomFloaties() {
+            let x = (Math.random() - 0.5) * 20;
+            let y = (Math.random() - 0.5) * 20;
+            let rotation = (Math.random() - 0.5) * 5;
+
+            left.style.transform = `translate(${x}px, ${y}px) rotate(${rotation}deg)`;
+
+            x = (Math.random() - 0.5) * 20;
+            y = (Math.random() - 0.5) * 20;
+            rotation = (Math.random() - 0.5) * 5;
+
+            right.style.transform = `translate(${x}px, ${y}px) rotate(${rotation}deg)`;
+        }
+        setTimeout(() => {
+            randomFloaties();
+        }, 100);
+        setInterval(randomFloaties, 4000)
+
+        const main = document.body.querySelector("main");
+
+        setTimeout(() => {
+            main.querySelectorAll("div").forEach(element => {
+                element.classList.add("faded");
+            });
+        }, 1000);
+
+        const cursorGlow = document.querySelector('.cursor-glow');
+
+        document.addEventListener('mousemove', e => {
+            cursorGlow.style.left = `${e.clientX}px`;
+            cursorGlow.style.top = `${e.clientY}px`;
+        });
+
+        let revealed = false;
+        const settingscog = document.body.querySelector("#settings-cog");
+        const settingsmenu = document.body.querySelector("#settings-menu");
+        const settingsmenubox = document.body.querySelector("#settings-menu-box");
+
+        const settingspage = document.body.querySelector("#settings-page");
+        const themescontainer = document.body.querySelector("#themes-container");
+
+        settingscog.addEventListener("click", () => {
+            if (settingsmenubox.classList.contains("settingsMover")) {
+                revealed = false;
+                settingsmenubox.className = "";
+                settingsmenu.className = "";
+                themescontainer.className = "";
+                settingscog.classList.remove("settingsMover-themes"); 
+                setTimeout(() => {
+                    settingspage.className = "";
+                    settingspage.style.display = "block";
+                    themescontainer.style.display = "none";
+                }, 300);
+            } else {
+                settingsmenubox.classList.add("settingsMover");
+                revealed = true;
+            }
+        });
+
+        settingspage.querySelectorAll("h3").forEach(element => {
+            element.addEventListener("click", e => {
+                switch (e.target.id) {
+                    case "theme-button":
+                        settingspage.classList.add("hider");
+                        themescontainer.style.display = "block";
+                        setTimeout(() => {
+                            if (revealed == true) {
+                                settingscog.classList.add("settingsMover-themes");
+                                settingsmenu.className = "themes-page";
+                                settingspage.style.display = "none";
+                                themescontainer.classList.add("fadein");
+                            }
+                        }, 500);
+                        break;
+
+                    default:
+                        break;
+                }
+            });
+        });
+
+
+        const sBox = document.body.querySelector("#stat-box");
+        const dSelection = document.body.querySelector("#select-box");
+        const dData = document.body.querySelector("#d-data");
+        const dSelectors = document.body.querySelectorAll(".dSelector");
+        let selectedD = 1;
+        dSelection.style.left = "0%";
+        dData.innerHTML = "<div><div>Columns: </div><div>10</div></div><div><div>Rows: </div><div>8</div></div><div><div>Mines: </div><div>10</div></div>";
+        sBox.innerHTML = "yo1";
+        dSelectors.forEach(element => {
+            element.addEventListener('click', difficultyChooser);
+        });
+
+        function difficultyChooser(e) {
+            switch (e.target.innerHTML) {
+                    case "Easy":
+                        selectedD = 1;
+                        dSelection.style.left = "0%";
+                        dData.innerHTML = "<div><div>Columns: </div><div>10</div></div><div><div>Rows: </div><div>8</div></div><div><div>Mines: </div><div>10</div></div>";
+                        sBox.innerHTML = "<div><h3>Games Played:</h3><div>0</div></div>";
+                        break;
+                    case "Medium":
+                        selectedD = 2;
+                        dSelection.style.left = "25%";
+                        dData.innerHTML = "<div><div>Columns: </div><div>18</div></div><div><div>Rows: </div><div>14</div></div><div><div>Mines: </div><div>40</div></div>";
+                        sBox.innerHTML = "yo2";
+                        break;
+                    case "Hard":
+                        selectedD = 3;
+                        dSelection.style.left = "50%";
+                        dData.innerHTML = "<div><div>Columns: </div><div>24</div></div><div><div>Rows: </div><div>20</div></div><div><div>Mines: </div><div>99</div></div>";
+                        sBox.innerHTML = "yo3";
+                        break;
+                    case "Custom":
+                        selectedD = 0;
+                        dSelection.style.left = "75%";
+                        dData.innerHTML = "<div><h4 id='ad-info'>* maximum of 99 on each</h4>Columns: <input type='number' id='cc' class='cinput'></div><div>Rows: <input type='number' id='rc' class='cinput'></div><div>Mines: <input type='number' id='mc' class='cinput'></div>";
+                        sBox.innerHTML = "yo0";
+                        break;
+            }
+        }
+
+        const dValues = {
+            easy: {
+                columns: 10,
+                rows: 8,
+                mines: 10
+            },
+            medium: {
+                columns: 18,
+                rows: 14,
+                mines: 40
+            },
+            hard: {
+                columns: 24,
+                rows: 20,
+                mines: 99
+            }
+        }
+
+        let records = [
+            [
+
+            ],
+            [],
+            [],
+            []
+        ];
+        localStorage.setItem("records", records);
+        console.log(localStorage.getItem("records"));
+
+        console.log(localStorage.getItem('theme'));
+        if (localStorage.getItem('theme') != null) {
+            document.body.classList.add(localStorage.getItem('theme'));
+        } else {
+            document.body.classList.add("pastel-bg");
+            localStorage.setItem('theme', 'pastel-bg');
+        }
+
+        const themes = document.querySelector("#themes");
+        themes.querySelectorAll("div").forEach(element => {
+            element.addEventListener("click", e => {
+                document.body.className = e.target.id;
+                localStorage.setItem('theme', e.target.id);
+                console.log(e.target.id)
+            })
+        });
+
+        const debugMode = false;
+        const fullSchizo = false;
+        const game = document.body.querySelector("#game");
+        let started = false;
+        game.style.display = "hidden";
+
+        const start = document.body.querySelector("#start");
+        start.addEventListener("click", starter);
+
+        function starter () {
+            if (started == false) {
+                started = true;
+                let start = null;
+
+                function fadeOut(timestamp) {
+                if (!start) start = timestamp;
+                let progress = (timestamp - start);
+                let opacity = Math.max(1 - progress / 1000, 0);
+
+                main.style.opacity = opacity;
+
+                if (opacity > 0) {
+                    requestAnimationFrame(fadeOut);
+                } else {
+                    main.style.display = "none";
+                    game.style.display = "block";
+                    setTimeout(() => {
+                        game.classList.add("fader");
+                        generateField();
+                    }, 100);
+                }
+            }
+
+                requestAnimationFrame(fadeOut);   
+            }
+        }
+
+        const gamefield = document.body.querySelector("#game-field");
+        let levels = ['easy', 'medium', 'hard'];
+        let tiles = []
+
+        function generateField () {
+            const cinputs = document.body.querySelectorAll(".cinput");
+            if  (selectedD > 0) {
+                gamefield.style.gridTemplateColumns = `repeat(${dValues[levels[selectedD - 1]].columns}, 30px)`;
+                gamefield.style.gridTemplateRows = `repeat(${dValues[levels[selectedD - 1]].rows}, 30px)`;
+            } else {
+                gamefield.style.gridTemplateColumns = `repeat(${cinputs[0].value}, 30px)`;
+                gamefield.style.gridTemplateRows = `repeat(${cinputs[1].value}, 30px)`;
+            }
+
+            console.log(dValues.easy.columns * dValues.easy.rows)
+
+            if (selectedD > 0) {
+                for (let row = 0; row < dValues[levels[selectedD - 1]].rows; row++) {
+                    for (let col = 0; col < dValues[levels[selectedD - 1]].columns; col++) {       
+                        const tile = {
+                            id: `${row}-${col}`,
+                            isFlagged: false,
+                            isRevealed: false,
+                            isMine: false,
+                            neighbors: []
+                        };
+            
+                        tiles.push(tile);
+
+                        const tileElement = document.createElement('div');
+                        tileElement.classList.add('tile');
+                        tileElement.classList.add('unselectable')
+                        tileElement.style.textAlign = "center";
+                        tileElement.dataset.id = tile.id;
+
+                        if ((row + col) % 2 === 0) {
+                            tileElement.classList.add('light');
+                        } else {
+                            tileElement.classList.add('dark');
+                        }
+
+                        gamefield.appendChild(tileElement);
+                    }
+                }
+            } else {
+                for (let row = 0; row < cinputs[1].value; row++) {
+                    for (let col = 0; col < cinputs[0].value; col++) {       
+                        const tile = {
+                            id: `${row}-${col}`,
+                            isFlagged: false,
+                            isRevealed: false,
+                            isMine: false,
+                            neighbors: [],
+                            minesAround: null
+                        };
+            
+                        tiles.push(tile);
+
+                        const tileElement = document.createElement('div');
+                        tileElement.classList.add('tile');
+                        tileElement.dataset.id = tile.id;
+
+                        if ((row + col) % 2 === 0) {
+                            tileElement.classList.add('light');
+                        } else {
+                            tileElement.classList.add('dark');
+                        }
+
+                        gamefield.appendChild(tileElement);
+                    }
+                }
+            }
+            placeMines();
+        }
+
+        let remainingMines;
+        let flagCount;
+
+        function placeMines() {
+            const cinputs = document.body.querySelectorAll(".cinput");
+
+            if (selectedD > 0) {
+                remainingMines = dValues[levels[selectedD - 1]].mines;
+                flagCount = remainingMines;
+            } else {
+                remainingMines = cinputs[2].value;
+                flagCount = remainingMines;
+            }
+
+            while (remainingMines > 0) {
+                const randomIndex = Math.floor(Math.random() * tiles.length);
+                const tile = tiles[randomIndex];
+
+                if (!tile.isMine) {
+                    tile.isMine = true;
+                    remainingMines--;
+                    }
+            }
+
+            while (remainingMines > 0) {
+                const randomIndex = Math.floor(Math.random() * tiles.length);
+                const tile = tiles[randomIndex];
+
+                if (!tile.isMine) {
+                    tile.isMine = true;
+                     remainingMines--;
+                }
+            }
+            addNeighbors();
+        }
+
+        function addNeighbors() {
+            tiles.forEach(tile => {
+                const [row, col] = tile.id.split('-').map(Number);
+
+                const neighbors = [
+                    [-1, -1], [-1, 0], [-1, 1],
+                    [0, -1],            [0, 1],
+                    [1, -1], [1, 0], [1, 1]
+                ];
+
+                if (selectedD > 0) {
+                    neighbors.forEach(([r, c]) => {
+                    if (row + r >= 0 && row + r < dValues[levels[selectedD - 1]].rows && col + c >= 0 && col + c < dValues[levels[selectedD - 1]].columns) {
+                        const neighborTile = tiles.find(t => t.id === `${row + r}-${col + c}`);
+                        tile.neighbors.push(neighborTile);
+                    }
+                })
+                } else {
+                    const cinputs = document.body.querySelectorAll(".cinput");
+                    neighbors.forEach(([r, c]) => {
+                    if (row + r >= 0 && row + r < cinputs[1].value && col + c >= 0 && col + c < cinputs[0].value) {
+                        const neighborTile = tiles.find(t => t.id === `${row + r}-${col + c}`);
+                        tile.neighbors.push(neighborTile);
+                    }
+                })
+                }
+
+                initializeBoard()
+                countNeighborMines();
+            });
+        }
+
+        function countNeighborMines() {
+            tiles.forEach(tile => {
+                tile.minesAround = tile.neighbors.filter(neighbor => neighbor && neighbor.isMine).length;
+            });
+        }
+
+        function initializeBoard() {
+            tiles.forEach(tile => {
+                const tileElement = document.querySelector(`[data-id="${tile.id}"]`);
+                if (!tile.isMine && tileElement.classList.contains('mine')) {
+                    tileElement.textContent = '';
+                    tileElement.classList.remove('mine');
+                }
+                if (debugMode && tile.isMine) {
+                    tileElement.classList.add('mine');
+                    if (tile.isFlagged) {
+                        tileElement.textContent = '🚩';
+                    } else {
+                        tileElement.textContent = '💣';
+                    }
+                }
+            });
+        }
+
+        let minesShuffled = false;
+        let firstClick = true;
+
+        function revealTile(tileElement, tile, key) {
+            if (!fullSchizo) {
+                key = true;
+            }
+
+            if (tile.isRevealed || tile.isFlagged) return;
+
+            if (firstClick) {
+                firstClick = false;
+                
+                if (tile.isMine) {
+                    tile.isMine = false;
+                    const safeTile = tiles.find(t => !t.isMine && !t.isRevealed && !t.isFlagged);
+                    if (safeTile) {
+                        safeTile.isMine = true;
+                    }
+                    initializeBoard();
+                    countNeighborMines();
+                }
+            }
+
+            tile.isRevealed = true;
+            tileElement.classList.add('revealed');
+            tileElement.textContent = '';
+
+            if (tile.isMine) {
+                tileElement.classList.add('mine');
+                tileElement.textContent = '💣';
+                return;
+            }
+
+            if (tile.minesAround === 0) {
+                if (key) {
+                    tileElement.textContent = "0";
+                    setTimeout(() => {
+                        tileElement.textContent = "";
+                    }, 1500);
+                } else {
+                    tileElement.textContent = "";
+                }
+                tile.neighbors.forEach(neighbor => {
+                    if (neighbor && !neighbor.isRevealed && !neighbor.isFlagged && !neighbor.isMine) {
+                        const neighborElement = document.querySelector(`[data-id="${neighbor.id}"]`);
+                        revealTile(neighborElement, neighbor, false);
+                    }
+                });
+            }
+
+            if (!minesShuffled) {
+                minesShuffled = true;
+                shuffleMines();
+            }
+
+            if (key) {
+                const tilesToShow = [tile, ...tile.neighbors.filter(n => n)];
+
+                tilesToShow.forEach(t => {
+                    const tElement = document.querySelector(`[data-id="${t.id}"]`);
+                    if (t.isRevealed && t.minesAround >= 0) {
+                        const allNeighborsRevealed = t.neighbors.every(n => n.isRevealed);
+                        if (allNeighborsRevealed) {
+                            tElement.textContent = "";
+                        } else {
+                            if (!fullSchizo) {
+                                tElement.textContent = t.minesAround; 
+                            } else {
+                                if (t.minesAround > 0) {
+                                    tElement.textContent = t.minesAround;
+                                }
+                            }
+                        }
+
+                        setTimeout(() => {
+                            if (t.isRevealed && !t.isMine) {
+                                tElement.textContent = '';
+                            }
+                        }, 1500);
+                    }
+                });
+            }
+        }
+
+
+
+        function shuffleMines() {
+            const unflaggedMines = tiles.filter(tile => tile.isMine && !tile.isFlagged);
+            const eligibleTiles = tiles.filter(tile => !tile.isRevealed && !tile.isMine && !tile.isFlagged);
+
+            if (eligibleTiles.length < unflaggedMines.length) return;
+
+            unflaggedMines.forEach(tile => {
+                tile.isMine = false;
+            });
+
+            for (let i = eligibleTiles.length -1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [eligibleTiles[i], eligibleTiles[j]] = [eligibleTiles[j], eligibleTiles[i]];
+            }
+
+            for (let i = 0; i < unflaggedMines.length; i++) {
+                eligibleTiles[i].textContent = 'b';
+                eligibleTiles[i].isMine = true;
+            }
+
+            initializeBoard()
+            countNeighborMines();
+        }
+
+        gamefield.addEventListener('click', function (event) {
+            if (event.target.classList.contains('tile')) {
+                const clickedTileId = event.target.dataset.id;
+                const clickedTile = tiles.find(t => t.id === clickedTileId);
+
+                if (clickedTile.isRevealed || clickedTile.isFlagged) return;
+
+                revealTile(event.target, clickedTile, true);
+
+                minesShuffled = false;
+            }
+        });
+        
+        gamefield.addEventListener('contextmenu', function (event) {
+            event.preventDefault();
+
+            if (event.target.classList.contains('tile')) {
+
+                const clickedTileId = event.target.dataset.id;
+                const clickedTile = tiles.find(t => t.id === clickedTileId);
+
+                if (!clickedTile.isRevealed) {
+
+                    if (clickedTile.isFlagged) {
+                        clickedTile.isFlagged = !clickedTile.isFlagged;
+                        event.target.textContent = "";
+                        event.target.classList.toggle('flagged');
+                        initializeBoard()
+                        flagCount++;
+                    } else {
+                        if (flagCount > 0) {
+                            clickedTile.isFlagged = !clickedTile.isFlagged;
+                            event.target.textContent = "🚩";
+                            event.target.classList.toggle('flagged');
+                            flagCount--;
+                        }
+                    }
+                    console.log(flagCount);
+                }
+
+            }
+        });
+    </script>
+</body>
+</html>
