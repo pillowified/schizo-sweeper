@@ -411,7 +411,7 @@ main > div.faded {
     background-color: rgba(200,255,200,0.5);
 }
 
-.tile.mine {
+.tile.revealed.mine {
     background-color: rgba(255,200,200,0.5);
 }
 
