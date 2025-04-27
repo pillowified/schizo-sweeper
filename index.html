@@ -565,6 +565,7 @@
             if (tile.isMine) {
                 tileElement.classList.add('mine');
                 tileElement.textContent = '💣';
+                tileElement.style.backgroundColor = "rgba(255,200,200,0.5)";
                 started = false;
                 endSequence(false);
                 return;
