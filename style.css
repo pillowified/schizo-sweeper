@@ -411,8 +411,8 @@ main > div.faded {
     background-color: rgba(200,255,200,0.5);
 }
 
-.tile.revealed.mine {
-    background-color: rgba(255,100,100,0.5);
+.tile.mine {
+    background-color: rgba(255,100,100,0.5) !important;
 }
 
 #settings-cog:hover {
