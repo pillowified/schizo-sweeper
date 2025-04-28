@@ -619,6 +619,23 @@
                     }
                 });
             }
+
+            tiles.forEach(t => {
+                if (t.isRevealed && !t.isMine) {
+                    const hasUnrevealedNeighbor = t.neighbors.some(n => n && !n.isRevealed);
+                    const tElement = document.querySelector(`[data-id="${t.id}"]`);
+                    if (tElement) {
+                        if (hasUnrevealedNeighbor) {
+                            tElement.textContent = t.minesAround > 0 ? t.minesAround : '';
+                            setTimeout(() => {
+                                tElement.textContent = "";
+                            }, 1500);
+                        } else {
+                            tElement.textContent = '';
+                        }
+                    }
+                }
+            });
         }
 
 
