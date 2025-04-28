@@ -389,7 +389,8 @@
                             isFlagged: false,
                             isRevealed: false,
                             isMine: false,
-                            neighbors: []
+                            neighbors: [],
+                            timeoutId: null
                         };
             
                         tiles.push(tile);
@@ -537,7 +538,7 @@
         let minesShuffled = false;
         let firstClick = true;
 
-        function revealTile(tileElement, tile, key) {
+        function revealTile(tileElement, tile, key, isRecursing = false) {
             if (!fullSchizo) {
                 key = true;
             }
@@ -570,6 +571,12 @@
                 return;
             }
 
+            // 🌟 ONLY shuffle when NOT recursing
+            if (!minesShuffled && !isRecursing) {
+                minesShuffled = true;
+                shuffleMines();
+            }
+
             if (tile.minesAround === 0) {
                 if (key) {
                     tileElement.textContent = "0";
@@ -582,61 +589,52 @@
                 tile.neighbors.forEach(neighbor => {
                     if (neighbor && !neighbor.isRevealed && !neighbor.isFlagged && !neighbor.isMine) {
                         const neighborElement = document.querySelector(`[data-id="${neighbor.id}"]`);
-                        revealTile(neighborElement, neighbor, false);
+                        // 🌟 Pass isRecursing = true when recursing
+                        revealTile(neighborElement, neighbor, false, true);
                     }
                 });
-            }
-
-            if (!minesShuffled) {
-                minesShuffled = true;
-                shuffleMines();
             }
 
             if (key) {
-                const tilesToShow = [tile, ...tile.neighbors.filter(n => n)];
+                const tilesToShow = new Set();
 
-                tilesToShow.forEach(t => {
-                    const tElement = document.querySelector(`[data-id="${t.id}"]`);
-                    if (t.isRevealed && t.minesAround >= 0) {
-                        const allNeighborsRevealed = t.neighbors.every(n => n.isRevealed);
-                        if (allNeighborsRevealed) {
-                            tElement.textContent = "";
-                        } else {
-                            if (!fullSchizo) {
-                                tElement.textContent = t.minesAround; 
-                            } else {
-                                if (t.minesAround > 0) {
-                                    tElement.textContent = t.minesAround;
-                                }
-                            }
-                        }
-
-                        setTimeout(() => {
-                            if (t.isRevealed && !t.isMine) {
-                                tElement.textContent = '';
-                            }
-                        }, 1500);
+                // Add the clicked tile and its neighbors
+                [tile, ...tile.neighbors.filter(n => n)].forEach(t => {
+                    if (t && t.isRevealed && !t.isMine) {
+                        tilesToShow.add(t);
                     }
                 });
-            }
 
-            tiles.forEach(t => {
-                if (t.isRevealed && !t.isMine) {
-                    const hasUnrevealedNeighbor = t.neighbors.some(n => n && !n.isRevealed);
-                    const tElement = document.querySelector(`[data-id="${t.id}"]`);
-                    if (tElement) {
+                // Also add any other revealed non-mine tile with unrevealed neighbors
+                tiles.forEach(t => {
+                    if (t.isRevealed && !t.isMine) {
+                        const hasUnrevealedNeighbor = t.neighbors.some(n => n && !n.isRevealed);
                         if (hasUnrevealedNeighbor) {
-                            tElement.textContent = t.minesAround > 0 ? t.minesAround : '';
-                            setTimeout(() => {
-                                tElement.textContent = "";
-                            }, 1500);
-                        } else {
-                            tElement.textContent = '';
+                            tilesToShow.add(t);
                         }
                     }
-                }
-            });
+                });
+
+                // Show the numbers immediately
+                tilesToShow.forEach(t => {
+                    const tElement = document.querySelector(`[data-id="${t.id}"]`);
+                    if (tElement) {
+                        tElement.textContent = t.minesAround > 0 ? t.minesAround : '';
+                    }
+                });
+
+                // Then clear all the numbers after 1.5 seconds
+                setTimeout(() => {
+                    tilesToShow.forEach(t => {
+                        const tElement = document.querySelector(`[data-id="${t.id}"]`);
+                        if (tElement && !t.isMine) {
+                            tElement.textContent = '';
+                        }
+                    });
+                }, 1500);
+            }
         }
+
 
 
 
