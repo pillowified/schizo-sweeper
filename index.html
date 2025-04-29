@@ -315,7 +315,7 @@
             })
         });
 
-        const debugMode = false;
+        const debugMode = true;
         const fullSchizo = false;
         const game = document.body.querySelector("#game");
         let started = false;
@@ -552,6 +552,7 @@
         }
 
         function revealTile(tileElement, tile, key, isRecursing = false) {
+            clearTimeout(timer);
             if (!fullSchizo) {
                 key = true;
             }
@@ -584,16 +585,13 @@
                 return;
             }
 
-            clearTimeout(timer);
-
             tiles.forEach(t => {
                 if (t.isRevealed && !t.isMine && !t.isFlagged) {
                     const tElement = document.querySelector(`[data-id="${t.id}"]`);
                     tElement.textContent = "";
                 }
             });
-
-            
+      
             if (!minesShuffled && !isRecursing) {
                 minesShuffled = true;
                 shuffleMines();
