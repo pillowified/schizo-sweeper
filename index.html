@@ -544,11 +544,18 @@
             timer = setTimeout(() => {   
                 tilesToShow.forEach(t => {
                 const tElement = document.querySelector(`[data-id="${t.id}"]`);
-                if (tElement && !t.isMine) {
+                if (!t.isMine) {
                     tElement.textContent = '';
                 }
                 });               
             }, 1500);
+
+            tilesToShow.forEach(t => {
+                    const tElement = document.querySelector(`[data-id="${t.id}"]`);
+                    if (tElement) {
+                        tElement.textContent = t.minesAround > 0 ? t.minesAround : '';
+                    }
+            });
         }
 
         function revealTile(tileElement, tile, key, isRecursing = false) {
@@ -628,13 +635,6 @@
                 });
 
                 runTimer(tilesToShow);
-                
-                tilesToShow.forEach(t => {
-                    const tElement = document.querySelector(`[data-id="${t.id}"]`);
-                    if (tElement) {
-                        tElement.textContent = t.minesAround > 0 ? t.minesAround : '';
-                    }
-                });
             }
         }
 
