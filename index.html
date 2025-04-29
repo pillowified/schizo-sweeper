@@ -537,6 +537,19 @@
 
         let minesShuffled = false;
         let firstClick = true;
+        let extend = false;
+        let timer;
+
+        function runTimer(tilesToShow) {
+            timer = setTimeout(() => {   
+                tilesToShow.forEach(t => {
+                const tElement = document.querySelector(`[data-id="${t.id}"]`);
+                if (tElement && !t.isMine) {
+                    tElement.textContent = '';
+                }
+                });               
+            }, 1500);
+        }
 
         function revealTile(tileElement, tile, key, isRecursing = false) {
             if (!fullSchizo) {
@@ -571,25 +584,26 @@
                 return;
             }
 
-            // 🌟 ONLY shuffle when NOT recursing
+            clearTimeout(timer);
+
+            tiles.forEach(t => {
+                if (t.isRevealed && !t.isMine && !t.isFlagged) {
+                    const tElement = document.querySelector(`[data-id="${t.id}"]`);
+                    tElement.textContent = "";
+                }
+            });
+
+            
             if (!minesShuffled && !isRecursing) {
                 minesShuffled = true;
                 shuffleMines();
             }
 
             if (tile.minesAround === 0) {
-                if (key) {
-                    tileElement.textContent = "0";
-                    setTimeout(() => {
-                        tileElement.textContent = "";
-                    }, 1500);
-                } else {
-                    tileElement.textContent = "";
-                }
                 tile.neighbors.forEach(neighbor => {
                     if (neighbor && !neighbor.isRevealed && !neighbor.isFlagged && !neighbor.isMine) {
                         const neighborElement = document.querySelector(`[data-id="${neighbor.id}"]`);
-                        // 🌟 Pass isRecursing = true when recursing
+                        
                         revealTile(neighborElement, neighbor, false, true);
                     }
                 });
@@ -598,14 +612,14 @@
             if (key) {
                 const tilesToShow = new Set();
 
-                // Add the clicked tile and its neighbors
+                
                 [tile, ...tile.neighbors.filter(n => n)].forEach(t => {
                     if (t && t.isRevealed && !t.isMine) {
                         tilesToShow.add(t);
                     }
                 });
 
-                // Also add any other revealed non-mine tile with unrevealed neighbors
+                
                 tiles.forEach(t => {
                     if (t.isRevealed && !t.isMine) {
                         const hasUnrevealedNeighbor = t.neighbors.some(n => n && !n.isRevealed);
@@ -615,23 +629,14 @@
                     }
                 });
 
-                // Show the numbers immediately
+                runTimer(tilesToShow);
+                
                 tilesToShow.forEach(t => {
                     const tElement = document.querySelector(`[data-id="${t.id}"]`);
                     if (tElement) {
                         tElement.textContent = t.minesAround > 0 ? t.minesAround : '';
                     }
                 });
-
-                // Then clear all the numbers after 1.5 seconds
-                setTimeout(() => {
-                    tilesToShow.forEach(t => {
-                        const tElement = document.querySelector(`[data-id="${t.id}"]`);
-                        if (tElement && !t.isMine) {
-                            tElement.textContent = '';
-                        }
-                    });
-                }, 1500);
             }
         }
 
