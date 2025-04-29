@@ -315,7 +315,7 @@
             })
         });
 
-        const debugMode = false;
+        const debugMode = true;
         const fullSchizo = false;
         const game = document.body.querySelector("#game");
         let started = false;
@@ -539,24 +539,33 @@
         let firstClick = true;
         let extend = false;
         let timer;
+        const tileTimers = new Map();
+
 
         function runTimer(tilesToShow) {
-            timer = setTimeout(() => {   
-                tilesToShow.forEach(t => {
-                const tElement = document.querySelector(`[data-id="${t.id}"]`);
-                if (!t.isMine) {
-                    tElement.textContent = '';
-                }
-                });               
-            }, 1500);
-
+            tileTimers.forEach(timer => clearTimeout(timer));
+            tileTimers.clear();
             tilesToShow.forEach(t => {
-                    const tElement = document.querySelector(`[data-id="${t.id}"]`);
-                    if (tElement) {
-                        tElement.textContent = t.minesAround > 0 ? t.minesAround : '';
+                const tElement = document.querySelector(`[data-id="${t.id}"]`);
+                if (!tElement) return;
+
+                if (tileTimers.has(t.id)) {
+                    clearTimeout(tileTimers.get(t.id));
+                }
+
+                tElement.textContent = t.minesAround > 0 ? t.minesAround : '';
+
+                const timeout = setTimeout(() => {
+                    if (!t.isMine) {
+                        tElement.textContent = '';
                     }
+                    tileTimers.delete(t.id); 
+                }, 1500);
+
+                tileTimers.set(t.id, timeout);
             });
         }
+
 
         function revealTile(tileElement, tile, key, isRecursing = false) {
             clearTimeout(timer);
@@ -568,17 +577,21 @@
 
             if (firstClick) {
                 firstClick = false;
-                
+
                 if (tile.isMine) {
                     tile.isMine = false;
                     const safeTile = tiles.find(t => !t.isMine && !t.isRevealed && !t.isFlagged && t !== tile);
                     if (safeTile) {
                         safeTile.isMine = true;
                     }
+
                     initializeBoard();
                     countNeighborMines();
+
+                    tile.minesAround = tile.neighbors.filter(neighbor => neighbor && neighbor.isMine).length;
                 }
             }
+
 
             tile.isRevealed = true;
             tileElement.classList.add('revealed');
@@ -598,33 +611,30 @@
                     tElement.textContent = "";
                 }
             });
-      
-            if (!minesShuffled && !isRecursing) {
-                minesShuffled = true;
-                shuffleMines();
-            }
 
             if (tile.minesAround === 0) {
                 tile.neighbors.forEach(neighbor => {
                     if (neighbor && !neighbor.isRevealed && !neighbor.isFlagged && !neighbor.isMine) {
                         const neighborElement = document.querySelector(`[data-id="${neighbor.id}"]`);
-                        
                         revealTile(neighborElement, neighbor, false, true);
                     }
                 });
             }
 
+            if (!minesShuffled && !isRecursing) {
+                minesShuffled = true;
+                shuffleMines();
+            }
+
             if (key) {
                 const tilesToShow = new Set();
 
-                
                 [tile, ...tile.neighbors.filter(n => n)].forEach(t => {
                     if (t && t.isRevealed && !t.isMine) {
                         tilesToShow.add(t);
                     }
                 });
 
-                
                 tiles.forEach(t => {
                     if (t.isRevealed && !t.isMine) {
                         const hasUnrevealedNeighbor = t.neighbors.some(n => n && !n.isRevealed);
@@ -637,6 +647,7 @@
                 runTimer(tilesToShow);
             }
         }
+
 
 
 

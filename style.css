@@ -382,6 +382,7 @@ main > div.faded {
     border-radius: 0.5rem;
     padding: 1rem;
     gap: 2px;
+    overflow: auto;
 }
 
 .tile {
