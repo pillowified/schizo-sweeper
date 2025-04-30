@@ -258,7 +258,7 @@
                     case "Custom":
                         selectedD = 0;
                         dSelection.style.left = "75%";
-                        dData.innerHTML = "<div><h4 id='ad-info'>* max: 40 col, 25 row, 99 mine</h4>Columns: <input type='number' id='cc' class='cinput'></div><div>Rows: <input type='number' id='rc' class='cinput'></div><div>Mines: <input type='number' id='mc' class='cinput'></div>";
+                        dData.innerHTML = "<div><h4 id='ad-info'>* max: 40 col, 25 row, 999 mine</h4>Columns: <input type='number' id='cc' class='cinput'></div><div>Rows: <input type='number' id='rc' class='cinput'></div><div>Mines: <input type='number' id='mc' class='cinput'></div>";
                         sBox.innerHTML = "yo0";
                         break;
             }
@@ -283,7 +283,7 @@
             custom: {
                 columns: [2, 40],
                 rows: [2, 25],
-                mines: [1, 99]
+                mines: [1, 999]
             }
         }
 
@@ -612,15 +612,6 @@
                 }
             });
 
-            if (tile.minesAround === 0) {
-                tile.neighbors.forEach(neighbor => {
-                    if (neighbor && !neighbor.isRevealed && !neighbor.isFlagged && !neighbor.isMine) {
-                        const neighborElement = document.querySelector(`[data-id="${neighbor.id}"]`);
-                        revealTile(neighborElement, neighbor, false, true);
-                    }
-                });
-            }
-
             if (!minesShuffled && !isRecursing) {
                 minesShuffled = true;
                 shuffleMines();
@@ -634,6 +625,7 @@
                     }
                 });
             }
+
 
             if (key) {
                 const tilesToShow = new Set();
@@ -656,10 +648,6 @@
                 runTimer(tilesToShow);
             }
         }
-
-
-
-
 
         function shuffleMines() {
             const unflaggedMines = tiles.filter(tile => tile.isMine && !tile.isFlagged);
