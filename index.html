@@ -626,6 +626,15 @@
                 shuffleMines();
             }
 
+            if (tile.minesAround === 0) {
+                tile.neighbors.forEach(neighbor => {
+                    if (neighbor && !neighbor.isRevealed && !neighbor.isFlagged && !neighbor.isMine) {
+                        const neighborElement = document.querySelector(`[data-id="${neighbor.id}"]`);
+                        revealTile(neighborElement, neighbor, false, true);
+                    }
+                });
+            }
+
             if (key) {
                 const tilesToShow = new Set();
 
