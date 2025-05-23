@@ -256,7 +256,7 @@ body.dream-bg {
     
     #selection {
         display: flex;
-        width: 60rem;
+        width: 60vw;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
