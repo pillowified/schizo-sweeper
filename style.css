@@ -116,10 +116,10 @@ body.dream-bg {
 
 @keyframes smallerify {
     0% {
-        font-size: 10rem;
+        font-size: calc(20vw + 4vh);
     }
     100% {
-        font-size: 5rem;
+        font-size: calc(3vw + 4vh);
     }
 }
 
@@ -208,7 +208,7 @@ body.dream-bg {
         position: relative;
         border: 0.2rem white solid;
         background-color: rgba(0, 0, 0, 0.1);
-        width: 15rem;
+        width: 100%;
         height: 3rem;
         border-radius: 0.5rem;
         display: flex;
@@ -256,7 +256,8 @@ body.dream-bg {
     
     #selection {
         display: flex;
-        width: 60rem;
+        width: 90vw;
+        max-width: 800px;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
@@ -269,7 +270,7 @@ body.dream-bg {
         color: white;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         border-radius: 0.5rem;
-        width: 7rem;
+        width: 50%;
         height: 3rem;
         font-size: x-large;
     }
@@ -279,7 +280,7 @@ body.dream-bg {
     }
     
     #d-data {
-        width: 15rem;
+        width: 100%;
         height: 7rem;
         display: flex;
         flex-direction: column;
@@ -305,7 +306,7 @@ body.dream-bg {
     
     #stat-box {
         height: 15rem;
-        width: 30rem;
+        width: 100%;
         background-color: rgba(0, 0, 0, 0.1);
         border: 0.2rem solid white;
         border-radius: 0.5rem;
@@ -498,11 +499,12 @@ body.dream-bg {
     }
     
     #title {
-        font-size: 5rem;
+        font-size: calc(3vw + 4vh);
         animation: wiggle 30s ease-in-out infinite, fadein 2s ease, smallerify 2s ease;
         transition: transform 2s ease-in-out;
         text-shadow: 0.5rem 0.5rem rgba(0, 0, 0, 0.1);
-	text-wrap: nowrap;
+	    text-wrap: nowrap;
+        z-index: 0;
     }
     
     #ad-info {
@@ -515,6 +517,16 @@ body.dream-bg {
     #left, #right {
         transition: transform 4s ease-in-out;
     }
+
+    #left {
+        width: 40%;
+        max-width: 250px;
+    }
+
+    #right {
+        width: 55%;
+    }
+
 }
 
 @media only screen and (max-width: 600px) {
