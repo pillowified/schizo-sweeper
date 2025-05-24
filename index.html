@@ -74,9 +74,10 @@
         </main>
         <div id="game">
             <div id="outer-field">
-                <div id="game-field">
-
+                <div id="hud">
+                    <div id="flags"></div>
                 </div>
+                <div id="game-field"></div>
             </div>
         </div>
     </div>
@@ -127,6 +128,7 @@
         });
 
         const title = document.body.querySelector("#title");
+        title.classList.add("fader");
         
         function randomFloaty() {
             const x = (Math.random() - 0.5) * 40;
@@ -296,9 +298,7 @@
             []
         ];
         localStorage.setItem("records", records);
-        console.log(localStorage.getItem("records"));
 
-        console.log(localStorage.getItem('theme'));
         if (localStorage.getItem('theme') != null) {
             document.body.classList.add(localStorage.getItem('theme'));
         } else {
@@ -340,7 +340,7 @@
                     requestAnimationFrame(fadeOut);
                 } else {
                     main.style.display = "none";
-                    game.style.display = "block";
+                    game.style.display = "flex";
                     setTimeout(() => {
                         game.classList.add("fader");
                         generateField();
@@ -358,13 +358,17 @@
         const maxValues = [dValues.custom.columns[1], dValues.custom.rows[1], dValues.custom.mines[1]];
         let tiles = []
 
-        const sizeUnit = `clamp(15px, calc(2vw + 1vh), 30px)`;
+        const baseWidth = 1920;
+        const scale = window.innerWidth / baseWidth;
+
+        const rawSize = 35 * scale;
+        const tileSize = Math.min(Math.max(rawSize, 20), 50) + "px"; 
 
         function generateField () {
             const cinputs = document.body.querySelectorAll(".cinput");
             if  (selectedD > 0) {
-                gamefield.style.gridTemplateColumns = `repeat(${dValues[levels[selectedD - 1]].columns}, ${sizeUnit})`;
-                gamefield.style.gridTemplateRows = `repeat(${dValues[levels[selectedD - 1]].rows}, ${sizeUnit})`;
+                gamefield.style.gridTemplateColumns = `repeat(${dValues[levels[selectedD - 1]].columns}, ${tileSize}`;
+                gamefield.style.gridTemplateRows = `repeat(${dValues[levels[selectedD - 1]].rows}, ${tileSize}`;
             } else {
                 for (let index = 0; index < 3; index++) {
                     if (cinputs[index].value < minValues[index]) {
@@ -377,9 +381,40 @@
                 if (cinputs[2].value >= cinputs[0].value * cinputs[1].value) {
                     cinputs[2].value = (cinputs[0].value * cinputs[1].value) - 1;
                 }
-                gamefield.style.gridTemplateColumns = `repeat(${cinputs[0].value}, calc(2vw + 1vh))`;
-                gamefield.style.gridTemplateRows = `repeat(${cinputs[1].value}, calc(2vw + 1vh))`;
+                gamefield.style.gridTemplateColumns = `repeat(${cinputs[0].value}, ${tileSize}`;
+                gamefield.style.gridTemplateRows = `repeat(${cinputs[1].value}, ${tileSize}`;
             }
+
+            const hud = document.getElementById("hud");
+            const outerfield = document.getElementById("outer-field");
+
+            const gamefieldWidth = gamefield.offsetWidth;
+            const gamefieldHeight = gamefield.offsetHeight;
+
+            hud.style.width = gamefieldWidth + "px";
+            outerfield.style.height = gamefieldHeight + 150 + "px";
+
+            window.addEventListener("resize", () => {
+                    const baseWidth = 1920;
+                    const scale = window.innerWidth / baseWidth;
+
+                    const rawSize = 35 * scale;
+                    const tileSize = Math.min(Math.max(rawSize, 20), 50) + "px"; 
+
+                    if (selectedD > 0) {
+                        gamefield.style.gridTemplateColumns = `repeat(${dValues[levels[selectedD - 1]].columns}, ${tileSize}`;
+                        gamefield.style.gridTemplateRows = `repeat(${dValues[levels[selectedD - 1]].rows}, ${tileSize}`;
+                    } else {
+                        gamefield.style.gridTemplateColumns = `repeat(${cinputs[0].value}, ${tileSize}`;
+                        gamefield.style.gridTemplateRows = `repeat(${cinputs[1].value}, ${tileSize}`;
+                    }
+
+                    const gamefieldWidth = gamefield.offsetWidth;
+                    const gamefieldHeight = gamefield.offsetHeight;
+
+                    hud.style.width = gamefieldWidth + "px";
+                    outerfield.style.height = gamefieldHeight + 150 + "px";
+                });
 
             console.log(dValues.easy.columns * dValues.easy.rows)
 
