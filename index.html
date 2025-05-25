@@ -811,12 +811,14 @@
         });
 
         let holdTimer = null;
-        let flaggedByHold = false;
+        let didHold = false;
         const holdDuration = 500;
 
         gamefield.addEventListener("touchstart", function (event) {
             const target = event.target;
             if (!target.classList.contains("tile")) return;
+
+            didHold = false;
 
             holdTimer = setTimeout(() => {
                 const clickedTileId = event.target.dataset.id;
@@ -828,7 +830,6 @@
                             clickedTile.isFlagged = !clickedTile.isFlagged;
                             event.target.textContent = "";
                             event.target.classList.toggle('flagged');
-                            initializeBoard()
                             flagCount++;
                         } else {
                             if (flagCount > 0) {
@@ -838,8 +839,9 @@
                                 flagCount--;
                             }
                         }
+                        initializeBoard()
                         flags.innerText = "🚩 : " + flagCount;
-                        flaggedByHold = true;
+                        didHold = true;
                     }
                 holdTimer = null;
             }, holdDuration);
@@ -850,13 +852,12 @@
                 clearTimeout(holdTimer);
                 holdTimer = null;
 
-                const target = event.target;
-                if (!target.classList.contains("tile")) return;
-
-                if (flaggedByHold) {
-                    flaggedByHold = false;
+                if (didHold) {
                     return;
                 }
+
+                const target = event.target;
+                if (!target.classList.contains("tile")) return;
 
                 revealTile(target, clickedTile, true);
                 shuffleMines = false;
