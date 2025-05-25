@@ -812,6 +812,7 @@
 
         let holdTimer = null;
         let didHold = false;
+        let cancelNextTap = false;
         const holdDuration = 500;
 
         gamefield.addEventListener("touchstart", function (event) {
@@ -819,8 +820,11 @@
             if (!target.classList.contains("tile")) return;
 
             didHold = false;
+            cancelNextTap = false;
 
             holdTimer = setTimeout(() => {
+                didHold = true;
+                cancelNextTap = true;
                 event.preventDefault();
                 const clickedTileId = event.target.dataset.id;
                     const clickedTile = tiles.find(t => t.id === clickedTileId);
@@ -842,19 +846,18 @@
                             }
                         }
                         flags.innerText = "🚩 : " + flagCount;
-                        didHold = true;
                     }
                 holdTimer = null;
             }, holdDuration);
         }, { passive: false });
 
         gamefield.addEventListener("touchend", function (event) {
-            event.preventDefault();
             if (holdTimer) {
                 clearTimeout(holdTimer);
                 holdTimer = null;
 
-                if (didHold) {
+                if (cancelNextTap || didHold) {
+                    cancelNextTap = false;
                     return;
                 }
 
