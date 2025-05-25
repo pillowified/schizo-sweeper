@@ -811,21 +811,18 @@
         });
 
         let holdTimer = null;
-        let didHold = false;
-        let cancelNextTap = false;
+        let justUnflagged = false;
         const holdDuration = 500;
 
         gamefield.addEventListener("touchstart", function (event) {
             const target = event.target;
             if (!target.classList.contains("tile")) return;
 
-            didHold = false;
-            cancelNextTap = false;
+            justUnflagged = false;
 
-            holdTimer = setTimeout(() => {
-                didHold = true;
-                cancelNextTap = true;
+            holdTimer = setTimeout(() => {;
                 event.preventDefault();
+
                 const clickedTileId = event.target.dataset.id;
                     const clickedTile = tiles.find(t => t.id === clickedTileId);
 
@@ -856,8 +853,8 @@
                 clearTimeout(holdTimer);
                 holdTimer = null;
 
-                if (cancelNextTap || didHold) {
-                    cancelNextTap = false;
+                if (justUnflagged) {
+                    justUnflagged = false;
                     return;
                 }
 
