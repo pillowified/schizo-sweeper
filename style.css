@@ -263,7 +263,7 @@ body.dream-bg {
         justify-content: space-between;
     }
     
-    #retry, #start {
+    #retry, #back, #start {
         user-select: none;
         background-color: rgba(0, 0, 0, 0.1);
         border: 0.2rem solid white;
@@ -275,8 +275,16 @@ body.dream-bg {
         font-size: x-large;
     }
     
-    #retry:hover, #start:hover {
+    #retry:hover, #start:hover, #back:hover {
         background-color: rgba(255,255,255,0.15);
+    }
+
+    #buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 50px;
+        width: 100%;
     }
     
     #d-data {
