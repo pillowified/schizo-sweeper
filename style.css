@@ -116,15 +116,6 @@ body.dream-bg {
     }
 }
 
-@keyframes smallerify {
-    0% {
-        font-size: 200px;
-    }
-    100% {
-        font-size: 80px;
-    }
-}
-
 @keyframes wiggle {
     0% { rotate: 0deg; }
     25% { rotate: 3deg; }
@@ -135,6 +126,15 @@ body.dream-bg {
 
 @media only screen and (min-width: 600px) {
     
+    @keyframes smallerify {
+        0% {
+            font-size: 200px;
+        }
+        100% {
+            font-size: 80px;
+        }
+    }
+
     main {
         position: relative;
         top: 12.5vh;
@@ -602,6 +602,471 @@ body.dream-bg {
 }
 
 @media only screen and (max-width: 600px) {
+
+    @keyframes smallerify {
+        0% {
+            font-size: 100px;
+        }
+        100% {
+            font-size: 35px;
+        }
+    }
+
+    main {
+        position: relative;
+        top: 12.5vh;
+        width: 75rem;
+        height: 75vh;
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        align-items: center;
+        flex-direction: column;
+    }
+    
+    #main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    main > div {
+        opacity: 0;
+    }
+    
+    main > div.faded {
+        animation: fadein 2s ease;
+        opacity: 1;
+    }
+    
+    .bgstars {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
+    }
+    
+    .star {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: white;
+        border-radius: 50%;
+        opacity: 0.8;
+        animation: twinkle 2s infinite ease-in-out;
+    }
+    
+    .unselectable {
+        user-select: none;
+    }
+
+    #ye {
+        display: none;
+    }
+
+    #version {
+        position: fixed;
+        font-size: 10px;
+        bottom: 1%;
+        right: 1%;
+        z-index: 999;
+    }
+
+    #settings-cog {
+        width: 16px;
+        height: 16px;
+        top: 5vh;
+        transition: transform 0.3s ease, translate 0.3s ease;
+    }
+
+    #settings-cog:hover {
+        animation: spin 0.5s ease-in-out;
+        cursor: pointer;
+      }
+    
+    #settings-menu {
+        width: 6rem;
+        height: 3rem;
+    }
+    
+    #settings-menu.themes-page {
+        width: 7.5rem;
+        height: 7rem;
+    }
+    
+    #settings-menu,
+    #settings-menu.themes-page {
+        position: fixed;
+        top: 5vh;
+        left: -6.1rem;
+        transition: width 0.3s ease, height 0.3s ease;/* use the same one for both */
+        background-color: rgba(0, 0, 0, 0.1);
+        border-radius: 0.5rem;
+        border: 0.1rem solid white;
+    }
+    
+    #settings-menu-box {
+        position: fixed;
+        display: inline-block;
+        transition: transform 0.3s ease, translate 0.3s ease;
+        z-index: 50;
+    }
+    
+    #settings-page {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transition: opacity 0.5s ease;
+    }
+    
+    #settings-page.hider {
+        opacity: 0;
+    }
+    
+    #settings-page > h3 {
+        font-size: 10px;
+        width: 100%;
+        text-align: center;
+    }
+    
+    #settings-page > h3:hover {
+        background-color: rgba(255,255,255,0.15);
+    }
+    
+    .settingsMover {
+        translate: 5.75rem;
+    }
+    
+    .settingsMover-themes {
+        translate: 1.5rem;
+    }
+    
+    
+    #settings-menu-box h2 {
+        position: fixed;
+        left: -5.5rem;
+        font-size: 16px;
+    }
+
+    #themes-container h3 {
+        text-align: center;
+        font-size: 10px;
+        height: 1rem;
+    }
+    
+    #themes-container {
+        position: relative;
+        display: none;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+    }
+    
+    #themes-container.fadein {
+        opacity: 1;
+        display: block;
+    }
+    
+    #themes {
+        display: grid;
+        place-items: center;
+        grid-template-columns: repeat(3, 1fr);
+        row-gap: 0.5rem;
+    }
+    
+    #themes div {
+        position: relative;
+        width: 1rem;
+        height: 1rem;
+        border-radius: 50%;
+        border: 0.2rem white solid;
+        cursor: pointer;
+    }
+
+    #title {
+        font-size: 35px;
+        animation: wiggle 30s ease-in-out infinite;
+        transition: transform 2s ease-in-out;
+        text-shadow: 0.5rem 0.5rem rgba(0, 0, 0, 0.1);
+	    text-wrap: nowrap;
+        z-index: 0;
+    }
+
+    #title.fader {
+        animation: fadein 2s ease, smallerify 2s ease;
+    }
+
+    #game {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        display: none;
+        justify-content: space-evenly;
+        align-items: center;
+        flex-direction: column;
+        transition: opacity 1s ease-in-out;
+        opacity: 0;
+    }
+    
+    #outer-field {
+        display: flex;
+        height: 90vh;
+        justify-content: center;
+        gap: 20px;
+        align-items: center;
+        flex-direction: column;
+    }
+    
+    #game.fader {
+        opacity: 1;
+    }
+    
+    #game-field {
+        display: grid;
+        background-color: rgba(0, 0, 0, 0.1);
+        border: 0.2rem solid white;
+        border-radius: 0.5rem;
+        padding: 0.5rem;
+        gap: 2px;
+        overflow: auto;
+        font-size: 12px;
+    }
+
+    #vignette {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        visibility: hidden;
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.75);
+        opacity: 0;
+        transition: opacity 0.5s ease-out;
+    }
+
+    #vignette h1 {
+        font-size: 40px;
+    }
+
+    #vignette.fadein {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    #containing-thing {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+        width: 25vw;
+        height: 50vh;
+        min-width: 400px;
+    }
+
+    #flags {
+        width: 80px;
+        height: 40px;
+        background-color: rgba(0, 0, 0, 0.1);
+        border: 0.15rem solid white;
+        border-radius: 0.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: larger;
+    }
+    
+    .tile {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .tile.light {
+        background-color: rgba(255,255,255,0.5);
+    }
+    
+    .tile.dark {
+        background-color: rgba(255,255,255,0.4);
+    }
+    
+    .tile.revealed {
+        background-color: rgba(0,0,0,0.1);
+    }
+
+    .tile.flagged {
+        background-color: rgba(200,255,200,0.5);
+    }
+    
+    .tile.mine {
+        background-color: rgba(255, 100, 100, 0.75);
+    }
+
+    #retry, #back, #start {
+        user-select: none;
+        background-color: rgba(0, 0, 0, 0.1);
+        border: 0.2rem solid white;
+        color: white;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        border-radius: 0.5rem;
+        width: 50%;
+        height: 3rem;
+        font-size: x-large;
+    }
+    
+    #retry:hover, #start:hover, #back:hover {
+        background-color: rgba(255,255,255,0.15);
+    }
+
+    #buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 25px;
+        width: 60%;
+    }
+
+    #preset {
+        user-select: none;
+        display: flex;
+        flex-direction: column;
+        height: 15rem;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    #difficulties {
+        position: relative;
+        border: 0.2rem white solid;
+        background-color: rgba(0, 0, 0, 0.1);
+        width: 100%;
+        height: 2rem;
+        border-radius: 0.5rem;
+        display: flex;
+        justify-content: space-between;
+        min-width: 200px;
+    }
+    
+    #difficulties button {
+        user-select: none;
+        color: white;
+        background-color: transparent;
+        border: none;
+        width: 100%;
+        height: 100%;
+        display: inline-block;
+        font-size: 12px;
+    }
+    
+    #difficulties button:hover {
+        background-color: rgba(255,255,255,0.15);
+        border-radius: 0.5rem;
+    }
+    
+    #difficulties .divider {
+        position: relative;
+        top: 25%;
+        border: 0.1rem solid white;
+        height: 50%;
+    }
+    
+    .cinput {
+        user-select: none;
+        background-color: transparent;
+        background-color: rgba(0, 0, 0, 0.1);
+        border: 0.1rem solid white;
+        border-radius: 0.5rem;
+        height: 1.5rem;
+        width: 2rem;
+        color: white;
+        text-align: center;
+        font-size: large;
+    }
+    
+    .cinput::-webkit-inner-spin-button, .cinput::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+    }
+    
+    #selection {
+        display: flex;
+        width: 90vw;
+        max-width: 800px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 40px;
+    }
+
+    #d-data {
+        width: 100%;
+        height: 7rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        text-shadow: 0.2rem 0.2rem rgba(0, 0, 0, 0.1);
+    }
+    
+    #d-data div {
+        display: flex;
+        justify-content: space-between;
+        animation: fader 0.2s ease-in-out;
+        height: 2rem;
+    }
+    
+    #select-box {
+        position: absolute;
+        width: 25%;
+        height: 100%;
+        border-radius: 0.5rem;
+        background-color: rgba(255,255,255,0.5);
+        transition: left 0.1s ease-out;
+    }
+    
+    #stat-box {
+        height: 5rem;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.1);
+        border: 0.2rem solid white;
+        border-radius: 0.5rem;
+    }
+    
+    #stat-box div {
+        animation: fader 0.2s ease-in-out;
+    }
+
+    #ad-info {
+        position: absolute;
+        font-size: small;
+        translate: 0 -1rem;
+        opacity: 0.5;
+    }
+    
+    #left, #right {
+        transition: transform 4s ease-in-out;
+    }
+
+    #left {
+        width: 80%;
+        max-width: 250px;
+    }
+
+    #right {
+        width: 50%;
+    }
+
+    #left h2 {
+        font-size: 16px;
+    }
+
+    #right h2 {
+        font-size: 16px;
+    }
 
 }
 
