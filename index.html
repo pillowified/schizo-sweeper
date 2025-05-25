@@ -854,21 +854,22 @@ gamefield.addEventListener("touchend", function (event) {
     if (holdTimer) {
         clearTimeout(holdTimer);
         holdTimer = null;
-
-        if (suppressNextReveal) {
-            suppressNextReveal = false;
-            return; // skip reveal!
-        }
-
-        const target = event.target;
-        if (!target.classList.contains("tile")) return;
-
-        const clickedTileId = target.dataset.id;
-        const clickedTile = tiles.find(t => t.id === clickedTileId);
-
-        revealTile(target, clickedTile, true);
-        shuffleMines = false;
     }
+
+    // 🛑 Move suppress check OUTSIDE the if-block!
+    if (suppressNextReveal) {
+        suppressNextReveal = false;
+        return;
+    }
+
+    const target = event.target;
+    if (!target.classList.contains("tile")) return;
+
+    const clickedTileId = target.dataset.id;
+    const clickedTile = tiles.find(t => t.id === clickedTileId);
+
+    revealTile(target, clickedTile, true);
+    shuffleMines = false;
 }, { passive: false });
 
 gamefield.addEventListener("touchcancel", function () {
