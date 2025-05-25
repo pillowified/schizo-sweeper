@@ -809,6 +809,60 @@
                 }
             }
         });
+
+        let holdTimer = null;
+        const holdDuration = 500;
+
+        gamefield.addEventListener("touchstart", function (event) {
+            const target = event.target;
+            if (!target.classList.contains("tile")) return;
+
+            holdTimer = setTimeout(() => {
+                const clickedTileId = event.target.dataset.id;
+                    const clickedTile = tiles.find(t => t.id === clickedTileId);
+
+                    if (!clickedTile.isRevealed) {
+
+                        if (clickedTile.isFlagged) {
+                            clickedTile.isFlagged = !clickedTile.isFlagged;
+                            event.target.textContent = "";
+                            event.target.classList.toggle('flagged');
+                            initializeBoard()
+                            flagCount++;
+                        } else {
+                            if (flagCount > 0) {
+                                clickedTile.isFlagged = !clickedTile.isFlagged;
+                                event.target.textContent = "🚩";
+                                event.target.classList.toggle('flagged');
+                                flagCount--;
+                            }
+                        }
+                        flags.innerText = "🚩 : " + flagCount;
+                    }
+                holdTimer = null;
+            }, holdDuration);
+        }, { passive: true });
+
+        gamefield.addEventListener("touchend", function (event) {
+            if (holdTimer) {
+                clearTimeout(holdTimer);
+                holdTimer = null;
+
+                const target = event.target;
+                if (!target.classList.contains("tile")) return;
+
+                revealTile(target, clickedTile, true);
+                shuffleMines = false;
+            }
+        });
+
+        gamefield.addEventListener("touchcancel", function () {
+            if (holdTimer) {
+                clearTimeout(holdTimer);
+                holdTimer = null;
+            }
+        });
+
     </script>
 </body>
 </html>
