@@ -116,10 +116,10 @@ body.dream-bg {
 
 @keyframes smallerify {
     0% {
-        font-size: calc(20vw + 4vh);
+        font-size: 200px;
     }
     100% {
-        font-size: calc(3vw + 4vh);
+        font-size: 80px;
     }
 }
 
@@ -263,7 +263,7 @@ body.dream-bg {
         justify-content: space-between;
     }
     
-    #submit, #start {
+    #retry, #start {
         user-select: none;
         background-color: rgba(0, 0, 0, 0.1);
         border: 0.2rem solid white;
@@ -275,7 +275,7 @@ body.dream-bg {
         font-size: x-large;
     }
     
-    #submit:hover, #start:hover {
+    #retry:hover, #start:hover {
         background-color: rgba(255,255,255,0.15);
     }
     
@@ -330,11 +330,11 @@ body.dream-bg {
     
     #outer-field {
         display: flex;
-        height: 80vh;
-        justify-content: space-between;
+        height: 90vh;
+        justify-content: center;
+        gap: 20px;
         align-items: center;
         flex-direction: column;
-        overflow: auto;
     }
     
     #game.fader {
@@ -351,12 +351,53 @@ body.dream-bg {
         overflow: auto;
     }
 
+    #vignette {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        visibility: hidden;
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.75);
+        opacity: 0;
+        transition: opacity 0.5s ease-out;
+    }
+
+    #vignette h1 {
+        font-size: 80px;
+    }
+
+    #vignette.fadein {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    #containing-thing {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+        width: 25vw;
+        height: 50vh;
+        min-width: 400px;
+    }
+
+    #ye {
+        display: none;
+    }
+
     #flags {
-        width: 20%;
+        width: 100px;
         height: 50px;
         background-color: rgba(0, 0, 0, 0.1);
-        border: 0.4rem solid white;
+        border: 0.3rem solid white;
         border-radius: 0.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: x-large;
     }
     
     .tile {
@@ -509,7 +550,7 @@ body.dream-bg {
     }
     
     #title {
-        font-size: calc(3vw + 4vh);
+        font-size: 80px;
         animation: wiggle 30s ease-in-out infinite;
         transition: transform 2s ease-in-out;
         text-shadow: 0.5rem 0.5rem rgba(0, 0, 0, 0.1);

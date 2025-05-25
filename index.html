@@ -75,9 +75,16 @@
         <div id="game">
             <div id="outer-field">
                 <div id="hud">
-                    <div id="flags"></div>
+                    <div id="flags" class="unselectable"></div>
                 </div>
                 <div id="game-field"></div>
+                <div id="vignette" class="unselectable">
+                    <div id="containing-thing">
+                        <h1 id="condition"></h1>
+                        <img src="stare-dont-blink.gif" alt="ye" id="ye">
+                        <input id="retry" type="button" value="Retry" onclick="retry()"></input>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -311,7 +318,6 @@
             element.addEventListener("click", e => {
                 document.body.className = e.target.id;
                 localStorage.setItem('theme', e.target.id);
-                console.log(e.target.id)
             })
         });
 
@@ -361,7 +367,7 @@
         const baseWidth = 1920;
         const scale = window.innerWidth / baseWidth;
 
-        const rawSize = 35 * scale;
+        const rawSize = 30 * scale;
         const tileSize = Math.min(Math.max(rawSize, 20), 50) + "px"; 
 
         function generateField () {
@@ -385,20 +391,11 @@
                 gamefield.style.gridTemplateRows = `repeat(${cinputs[1].value}, ${tileSize}`;
             }
 
-            const hud = document.getElementById("hud");
-            const outerfield = document.getElementById("outer-field");
-
-            const gamefieldWidth = gamefield.offsetWidth;
-            const gamefieldHeight = gamefield.offsetHeight;
-
-            hud.style.width = gamefieldWidth + "px";
-            outerfield.style.height = gamefieldHeight + 150 + "px";
-
             window.addEventListener("resize", () => {
                     const baseWidth = 1920;
                     const scale = window.innerWidth / baseWidth;
 
-                    const rawSize = 35 * scale;
+                    const rawSize = 30 * scale;
                     const tileSize = Math.min(Math.max(rawSize, 20), 50) + "px"; 
 
                     if (selectedD > 0) {
@@ -408,15 +405,7 @@
                         gamefield.style.gridTemplateColumns = `repeat(${cinputs[0].value}, ${tileSize}`;
                         gamefield.style.gridTemplateRows = `repeat(${cinputs[1].value}, ${tileSize}`;
                     }
-
-                    const gamefieldWidth = gamefield.offsetWidth;
-                    const gamefieldHeight = gamefield.offsetHeight;
-
-                    hud.style.width = gamefieldWidth + "px";
-                    outerfield.style.height = gamefieldHeight + 150 + "px";
                 });
-
-            console.log(dValues.easy.columns * dValues.easy.rows)
 
             if (selectedD > 0) {
                 for (let row = 0; row < dValues[levels[selectedD - 1]].rows; row++) {
@@ -482,6 +471,7 @@
 
         let remainingMines;
         let flagCount;
+        const flags = document.getElementById("flags");
 
         function placeMines() {
             const cinputs = document.body.querySelectorAll(".cinput");
@@ -493,6 +483,8 @@
                 remainingMines = cinputs[2].value;
                 flagCount = remainingMines;
             }
+
+            flags.innerText = "🚩 : " + flagCount;
 
             while (remainingMines > 0) {
                 const randomIndex = Math.floor(Math.random() * tiles.length);
@@ -603,6 +595,11 @@
             });
         }
 
+        const vignette = document.getElementById("vignette");
+
+        function checkWinCondition() {
+            return tiles.every(tile => tile.isMine || tile.isRevealed);
+        }
 
         function revealTile(tileElement, tile, key, isRecursing = false) {
             clearTimeout(timer);
@@ -639,6 +636,12 @@
                 tileElement.textContent = '💣';
                 started = false;
                 endSequence(false);
+                return;
+            }
+
+            if (checkWinCondition()) {
+                started = false;
+                endSequence(true);
                 return;
             }
 
@@ -687,35 +690,71 @@
         }
 
         function shuffleMines() {
-            const unflaggedMines = tiles.filter(tile => tile.isMine && !tile.isFlagged);
-            const eligibleTiles = tiles.filter(tile => !tile.isRevealed && !tile.isMine && !tile.isFlagged);
+            const remainingTiles = tiles.filter(tile => !tile.isRevealed && !tile.isFlagged);
+            const minesToShuffle = remainingTiles.filter(tile => tile.isMine);
 
-            if (eligibleTiles.length < unflaggedMines.length) return;
+            remainingTiles.forEach(tile => tile.isMine = false);
 
-            unflaggedMines.forEach(tile => {
-                tile.isMine = false;
-            });
-
-            for (let i = eligibleTiles.length -1; i > 0; i--) {
+            for (let i = remainingTiles.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
-                [eligibleTiles[i], eligibleTiles[j]] = [eligibleTiles[j], eligibleTiles[i]];
+                [remainingTiles[i], remainingTiles[j]] = [remainingTiles[j], remainingTiles[i]];
             }
 
-            for (let i = 0; i < unflaggedMines.length; i++) {
-                eligibleTiles[i].textContent = 'b';
-                eligibleTiles[i].isMine = true;
+            for (let i = 0; i < minesToShuffle.length; i++) {
+                remainingTiles[i].isMine = true;
             }
 
-            initializeBoard()
+            initializeBoard();
             countNeighborMines();
         }
 
+        const textCondition = document.getElementById("condition");
+
         function endSequence (condition) {
+            vignette.classList.add("fadein");
+            const unrevealedSafeTiles = tiles.filter(t => !t.isMine && !t.isRevealed).length;
             if (condition) {
-                console.log("YOU WIN");
+                textCondition.innerText = "You WIN!";
             } else {
-                console.log("YOU LOST");
+                textCondition.innerText = "You LOST!";
+                if (unrevealedSafeTiles <= 3) {
+                    const ye = document.getElementById("ye");
+                    ye.style.display = "block";
+                }
             }
+        }
+
+        function retry() {
+            vignette.className = "";
+            tiles.forEach(tile => {
+                tile.isFlagged = false;
+                tile.isRevealed = false;
+                tile.isMine = false;
+                tile.neighbors = [];
+                tile.minesAround = null;
+            })
+            const divs = document.getElementById("game-field");
+            divs.querySelectorAll("div").forEach(div => {
+                div.classList.remove("revealed", "mine", "flagged");
+                div.textContent = "";
+            });
+
+            tileTimers.forEach(timer => clearTimeout(timer));
+            tileTimers.clear();
+            tiles.forEach(t => {
+            const tElement = document.querySelector(`[data-id="${t.id}"]`);
+            if (!tElement) return;
+
+            if (tileTimers.has(t.id)) {
+                clearTimeout(tileTimers.get(t.id));
+            }
+
+            tElement.textContent = '';});
+                
+            started = true;
+            firstClick = true;
+
+            placeMines();
         }
 
         gamefield.addEventListener('click', function (event) {
@@ -732,7 +771,7 @@
                 }
             }
         });
-        
+
         gamefield.addEventListener('contextmenu', function (event) {
             event.preventDefault();
 
@@ -758,7 +797,7 @@
                                 flagCount--;
                             }
                         }
-                        console.log(flagCount);
+                        flags.innerText = "🚩 : " + flagCount;
                     }
                 }
             }
