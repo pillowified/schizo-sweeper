@@ -729,7 +729,7 @@
         }
 
         function retry() {
-            vignette.className = "";
+            vignette.classList.remove("fadein");
             tiles.forEach(tile => {
                 tile.isFlagged = false;
                 tile.isRevealed = false;
