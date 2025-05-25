@@ -195,6 +195,8 @@ body.dream-bg {
     
     .unselectable {
         user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
     }
     
     #preset {
@@ -356,6 +358,7 @@ body.dream-bg {
         background-color: rgba(0, 0, 0, 0.1);
         border: 0.4rem solid white;
         border-radius: 0.5rem;
+        max-width: 80vw;
         padding: 1rem;
         gap: 2px;
         overflow: auto;
@@ -701,7 +704,7 @@ body.dream-bg {
     #settings-menu.themes-page {
         position: fixed;
         top: 5vh;
-        left: -6.1rem;
+        left: -6.25rem;
         transition: width 0.3s ease, height 0.3s ease;/* use the same one for both */
         background-color: rgba(0, 0, 0, 0.1);
         border-radius: 0.5rem;
@@ -835,6 +838,7 @@ body.dream-bg {
         gap: 2px;
         overflow: auto;
         font-size: 12px;
+        max-width: 85vw;
     }
 
     #vignette {
