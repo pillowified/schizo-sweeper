@@ -821,6 +821,7 @@
             didHold = false;
 
             holdTimer = setTimeout(() => {
+                event.preventDefault();
                 const clickedTileId = event.target.dataset.id;
                     const clickedTile = tiles.find(t => t.id === clickedTileId);
 
@@ -830,6 +831,7 @@
                             clickedTile.isFlagged = !clickedTile.isFlagged;
                             event.target.textContent = "";
                             event.target.classList.toggle('flagged');
+                            initializeBoard()
                             flagCount++;
                         } else {
                             if (flagCount > 0) {
@@ -839,15 +841,15 @@
                                 flagCount--;
                             }
                         }
-                        initializeBoard()
                         flags.innerText = "🚩 : " + flagCount;
                         didHold = true;
                     }
                 holdTimer = null;
             }, holdDuration);
-        }, { passive: true });
+        }, { passive: false });
 
         gamefield.addEventListener("touchend", function (event) {
+            event.preventDefault();
             if (holdTimer) {
                 clearTimeout(holdTimer);
                 holdTimer = null;
@@ -862,7 +864,7 @@
                 revealTile(target, clickedTile, true);
                 shuffleMines = false;
             }
-        });
+        }, { passive: false });
 
         gamefield.addEventListener("touchcancel", function () {
             if (holdTimer) {
