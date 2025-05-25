@@ -664,6 +664,8 @@ body.dream-bg {
     
     .unselectable {
         user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
     }
 
     #ye {
