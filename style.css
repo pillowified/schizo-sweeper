@@ -582,6 +582,13 @@ body.dream-bg {
         width: 55%;
     }
 
+    #version {
+        position: fixed;
+        bottom: 1%;
+        right: 1%;
+        z-index: 999;
+    }
+
 }
 
 @media only screen and (max-width: 600px) {
