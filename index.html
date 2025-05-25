@@ -796,7 +796,6 @@
                             event.target.classList.toggle('flagged');
                             initializeBoard()
                             flagCount++;
-                            justUnflagged = true;
                         } else {
                             if (flagCount > 0) {
                                 clickedTile.isFlagged = !clickedTile.isFlagged;
@@ -835,6 +834,7 @@
                             event.target.classList.toggle('flagged');
                             initializeBoard()
                             flagCount++;
+                            justUnflagged = true;
                         } else {
                             if (flagCount > 0) {
                                 clickedTile.isFlagged = !clickedTile.isFlagged;
@@ -861,6 +861,9 @@
 
                 const target = event.target;
                 if (!target.classList.contains("tile")) return;
+
+                const clickedTileId = target.dataset.id;
+                const clickedTile = tiles.find(t => t.id === clickedTileId);
 
                 revealTile(target, clickedTile, true);
                 shuffleMines = false;
