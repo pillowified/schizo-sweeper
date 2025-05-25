@@ -716,12 +716,14 @@
 
         function endSequence (condition) {
             vignette.classList.add("fadein");
+            const totalSafeTiles = tiles.filter(t => !t.isMine).length;
             const unrevealedSafeTiles = tiles.filter(t => !t.isMine && !t.isRevealed).length;
+
             if (condition) {
                 textCondition.innerText = "You WIN!";
             } else {
                 textCondition.innerText = "You LOST!";
-                if (unrevealedSafeTiles <= 3) {
+                if (unrevealedSafeTiles <= totalSafeTiles * 0.05) {
                     const ye = document.getElementById("ye");
                     ye.style.display = "block";
                 }
@@ -737,6 +739,7 @@
                 tile.neighbors = [];
                 tile.minesAround = null;
             })
+            ye.style.display = "none";
             const divs = document.getElementById("game-field");
             divs.querySelectorAll("div").forEach(div => {
                 div.classList.remove("revealed", "mine", "flagged");
