@@ -796,6 +796,7 @@
                             event.target.classList.toggle('flagged');
                             initializeBoard()
                             flagCount++;
+                            justUnflagged = true;
                         } else {
                             if (flagCount > 0) {
                                 clickedTile.isFlagged = !clickedTile.isFlagged;
