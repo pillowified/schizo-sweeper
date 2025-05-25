@@ -372,7 +372,7 @@
         const scale = window.innerWidth / baseWidth;
 
         const rawSize = 30 * scale;
-        const tileSize = Math.min(Math.max(rawSize, 20), 50) + "px"; 
+        const tileSize = Math.min(Math.max(rawSize, 25), 50) + "px"; 
 
         function generateField () {
             const cinputs = document.body.querySelectorAll(".cinput");
@@ -400,7 +400,7 @@
                     const scale = window.innerWidth / baseWidth;
 
                     const rawSize = 30 * scale;
-                    const tileSize = Math.min(Math.max(rawSize, 20), 50) + "px"; 
+                    const tileSize = Math.min(Math.max(rawSize, 25), 50) + "px"; 
 
                     if (selectedD > 0) {
                         gamefield.style.gridTemplateColumns = `repeat(${dValues[levels[selectedD - 1]].columns}, ${tileSize}`;
