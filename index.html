@@ -885,8 +885,11 @@
         const clickedTileId = target.dataset.id;
         const clickedTile = tiles.find(t => t.id === clickedTileId);
 
-        revealTile(target, clickedTile, true);
-        shuffleMines();
+        if (clickedTile.isRevealed || clickedTile.isFlagged) return;
+
+                    minesShuffled = false;
+
+                    revealTile(event.target, clickedTile, true);
         }
         });
 
