@@ -74,10 +74,10 @@
         </main>
         <div id="game">
             <div id="outer-field">
-                <div id="hud">
+                <div id="hud" class="unselectable">
                     <div id="flags" class="unselectable"></div>
                 </div>
-                <div id="game-field"></div>
+                <div id="game-field" class="unselectable"></div>
                 <div id="vignette" class="unselectable">
                     <div id="containing-thing">
                         <h1 id="condition"></h1>
@@ -810,74 +810,52 @@
             }
         });
 
-        let holdTimer = null;
-let suppressNextReveal = false;
-const holdDuration = 500;
+        const holdDuration = 500;
 
-gamefield.addEventListener("touchstart", function (event) {
-    const target = event.target;
-    if (!target.classList.contains("tile")) return;
+        gamefield.addEventListener("touchstart", function (event) {
+            const target = event.target;
+            if (!target.classList.contains("tile")) return;
 
-    suppressNextReveal = false;
+            const start = Date.now();
+        });
 
-    holdTimer = setTimeout(() => {
-        event.preventDefault();
+        gamefield.addEventListener("touchend", function (event) {
 
-        const clickedTileId = target.dataset.id;
-        const clickedTile = tiles.find(t => t.id === clickedTileId);
+            const target = event.target;
+            if (!target.classList.contains("tile")) return;
 
-        if (!clickedTile.isRevealed) {
-            if (clickedTile.isFlagged) {
-                clickedTile.isFlagged = false;
-                target.textContent = "";
-                target.classList.remove('flagged');
-                initializeBoard();
-                flagCount++;
-                suppressNextReveal = true;  // prevent reveal after unflag
-            } else {
-                if (flagCount > 0) {
-                    clickedTile.isFlagged = true;
-                    target.textContent = "🚩";
-                    target.classList.add('flagged');
-                    flagCount--;
-                    suppressNextReveal = true; // also prevent reveal if flagging
+            const end = Date.now();
+
+            if (end - start < holdDuration) {
+                if (!clickedTile.isRevealed) {
+                    if (clickedTile.isFlagged) {
+                        clickedTile.isFlagged = false;
+                        target.textContent = "";
+                        target.classList.remove('flagged');
+                        initializeBoard();
+                        flagCount++;
+                    } else {
+                        if (flagCount > 0) {
+                            clickedTile.isFlagged = true;
+                            target.textContent = "🚩";
+                            target.classList.add('flagged');
+                            flagCount--;
+                        }
+                    }
+                    flags.innerText = "🚩 : " + flagCount;
                 }
+            } else {
+                const clickedTileId = target.dataset.id;
+                const clickedTile = tiles.find(t => t.id === clickedTileId);
+
+                minesShuffled = false;
+                revealTile(target, clickedTile, true);
             }
-            flags.innerText = "🚩 : " + flagCount;
-        }
+        });
 
-        holdTimer = null;
-    }, holdDuration);
-}, { passive: false });
-
-gamefield.addEventListener("touchend", function (event) {
-    if (holdTimer) {
-        clearTimeout(holdTimer);
-        holdTimer = null;
-    }
-
-    // 🛑 Move suppress check OUTSIDE the if-block!
-    if (suppressNextReveal) {
-        suppressNextReveal = false;
-        return;
-    }
-
-    const target = event.target;
-    if (!target.classList.contains("tile")) return;
-
-    const clickedTileId = target.dataset.id;
-    const clickedTile = tiles.find(t => t.id === clickedTileId);
-
-    minesShuffled = false;
-    revealTile(target, clickedTile, true);
-}, { passive: false });
-
-gamefield.addEventListener("touchcancel", function () {
-    if (holdTimer) {
-        clearTimeout(holdTimer);
-        holdTimer = null;
-    }
-});
+        gamefield.addEventListener("touchcancel", function () {
+            
+        });
 
     </script>
 </body>
