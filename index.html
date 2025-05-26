@@ -82,6 +82,7 @@
                     <div id="containing-thing">
                         <h1 id="condition"></h1>
                         <img src="stare-dont-blink.gif" alt="ye" id="ye">
+                        <img src="KanyeWest.png" alt="ye2" id="ye2">
                         <div id="buttons">
                             <input id="retry" type="button" value="Retry" onclick="retry()">
                             <input id="back" type="button" value="Back" onclick="location.reload()">
@@ -723,7 +724,10 @@
                 textCondition.innerText = "You WIN!";
             } else {
                 textCondition.innerText = "You LOST!";
-                if (unrevealedSafeTiles <= totalSafeTiles * 0.05) {
+                if (unrevealedSafeTiles == 1) {
+                    const ye2 = document.getElementById("ye2")
+                    ye2.style.display = "block";
+                } else if (unrevealedSafeTiles <= totalSafeTiles * 0.05) {
                     const ye = document.getElementById("ye");
                     ye.style.display = "block";
                 }
