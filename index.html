@@ -326,7 +326,7 @@
             })
         });
 
-        const debugMode = false;
+        const debugMode = true;
         const fullSchizo = false;
         const game = document.body.querySelector("#game");
         let started = false;
@@ -559,7 +559,7 @@
                     tileElement.classList.remove('mine');
                 }
                 if (debugMode && tile.isMine) {
-                    tileElement.classList.add('mine');
+                    //tileElement.classList.add('mine');
                     if (tile.isFlagged) {
                         tileElement.textContent = '🚩';
                     } else {
