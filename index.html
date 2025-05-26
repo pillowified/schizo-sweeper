@@ -816,7 +816,7 @@
             const target = event.target;
             if (!target.classList.contains("tile")) return;
 
-            const start = Date.now();
+            let start = Date.now();
         });
 
         const version = document.getElementById("version");
@@ -826,7 +826,7 @@
             const target = event.target;
             if (!target.classList.contains("tile")) return;
 
-            const end = Date.now();
+            let end = Date.now();
             version.innerText = end - start;
 
             if (end - start < holdDuration) {
