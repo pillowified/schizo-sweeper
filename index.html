@@ -810,13 +810,14 @@
             }
         });
 
+        let starteer = 0;
         const holdDuration = 500;
 
         gamefield.addEventListener("touchstart", function (event) {
             const target = event.target;
             if (!target.classList.contains("tile")) return;
 
-            let start = Date.now();
+            starteer = Date.now();
         });
 
         const version = document.getElementById("version");
@@ -827,7 +828,7 @@
             if (!target.classList.contains("tile")) return;
 
             let end = Date.now();
-            version.innerText = end - start;
+            version.innerText = end - starteer;
 
             if (end - start < holdDuration) {
                 if (!clickedTile.isRevealed) {
