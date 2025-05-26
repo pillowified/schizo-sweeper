@@ -399,6 +399,8 @@ body.dream-bg {
 
     #ye, #ye2 {
         display: none;
+	width: 100%;
+	height: 100%;
     }
 
     #flags {
