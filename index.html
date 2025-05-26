@@ -824,8 +824,6 @@
             starteer = Date.now();
         });
 
-        const version = document.getElementById("version");
-
         gamefield.addEventListener("touchend", function (event) {
 
             const target = event.target;
@@ -835,7 +833,6 @@
             const clickedTile = tiles.find(t => t.id === clickedTileId);
 
             let end = Date.now();
-            version.innerText = end - starteer;
 
             if (end - starteer > holdDuration) {
                 if (!clickedTile.isRevealed) {
