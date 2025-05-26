@@ -671,6 +671,7 @@ body.dream-bg {
     #ye {
         display: none;
 	width: 50%;
+        height: 50%;
     }
 
     #version {
