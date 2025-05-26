@@ -764,12 +764,10 @@
             placeMines();
         }
 
-        let cooldown = false;
-
         gamefield.addEventListener('click', function (event) {
             if (started) {
                 if (event.target.classList.contains('tile')) {
-                    if (!cooldown) {
+                    if (!suppressNextReveal) {
                         const clickedTileId = event.target.dataset.id;
                     const clickedTile = tiles.find(t => t.id === clickedTileId);
 
@@ -815,6 +813,8 @@
         });
 
         let starteer = 0;
+        let holdTimer = null;
+        let suppressNextReveal = false;
         const holdDuration = 500;
 
         gamefield.addEventListener("touchstart", function (event) {
@@ -822,6 +822,37 @@
             if (!target.classList.contains("tile")) return;
 
             starteer = Date.now();
+            
+            suppressNextReveal = false;
+
+    holdTimer = setTimeout(() => {
+        event.preventDefault();
+
+        const clickedTileId = target.dataset.id;
+        const clickedTile = tiles.find(t => t.id === clickedTileId);
+
+        if (!clickedTile.isRevealed) {
+            if (clickedTile.isFlagged) {
+                clickedTile.isFlagged = false;
+                target.textContent = "";
+                target.classList.remove('flagged');
+                initializeBoard();
+                flagCount++;
+                suppressNextReveal = true;  // prevent reveal after unflag
+            } else {
+                if (flagCount > 0) {
+                    clickedTile.isFlagged = true;
+                    target.textContent = "🚩";
+                    target.classList.add('flagged');
+                    flagCount--;
+                    suppressNextReveal = true; // also prevent reveal if flagging
+                }
+            }
+            flags.innerText = "🚩 : " + flagCount;
+        }
+
+        holdTimer = null;
+    }, holdDuration);
         });
 
         gamefield.addEventListener("touchend", function (event) {
@@ -834,37 +865,34 @@
 
             let end = Date.now();
 
-            if (end - starteer > holdDuration) {
-                if (!clickedTile.isRevealed) {
-                    if (clickedTile.isFlagged) {
-                        clickedTile.isFlagged = false;
-                        target.textContent = "";
-                        target.classList.remove('flagged');
-                        initializeBoard();
-                        flagCount++;
-                    } else {
-                        if (flagCount > 0) {
-                            clickedTile.isFlagged = true;
-                            target.textContent = "🚩";
-                            target.classList.add('flagged');
-                            flagCount--;
-                        }
-                    }
-                    flags.innerText = "🚩 : " + flagCount;
-                }
-                cooldown = true;
-                setTimeout(() => {
-                  cooldown = false;
+            if (holdTimer) {
+        clearTimeout(holdTimer);
+        holdTimer = null;
+
+        if (suppressNextReveal) {
+            setTimeout(() => {
+                  suppressNextReveal = false;
                 }, 250);
-            } else {
-                minesShuffled = false;
-                revealTile(target, clickedTile, true);
-            }
+        }
+
+        const target = event.target;
+        if (!target.classList.contains("tile")) return;
+
+        const clickedTileId = target.dataset.id;
+        const clickedTile = tiles.find(t => t.id === clickedTileId);
+
+        revealTile(target, clickedTile, true);
+        shuffleMines();
+        }
         });
 
         gamefield.addEventListener("touchcancel", function () {
-            
-        });
+            if (holdTimer) {
+        clearTimeout(holdTimer);
+        holdTimer = null;
+    }
+});
+        
 
     </script>
 </body>
