@@ -819,7 +819,7 @@
         let starteer = 0;
         let holdTimer = null;
         let suppressNextReveal = false;
-        const holdDuration = 500;
+        const holdDuration = 250;
 
         gamefield.addEventListener("touchstart", function (event) {
             const target = event.target;
@@ -876,7 +876,7 @@
         if (suppressNextReveal) {
             setTimeout(() => {
                   suppressNextReveal = false;
-                }, 250);
+                }, 200);
         }
 
         const target = event.target;
