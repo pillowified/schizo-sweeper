@@ -764,10 +764,13 @@
             placeMines();
         }
 
+        let cooldown = false;
+
         gamefield.addEventListener('click', function (event) {
             if (started) {
                 if (event.target.classList.contains('tile')) {
-                    const clickedTileId = event.target.dataset.id;
+                    if (!cooldown) {
+                        const clickedTileId = event.target.dataset.id;
                     const clickedTile = tiles.find(t => t.id === clickedTileId);
 
                     if (clickedTile.isRevealed || clickedTile.isFlagged) return;
@@ -775,6 +778,7 @@
                     minesShuffled = false;
 
                     revealTile(event.target, clickedTile, true);
+                    }
                 }
             }
         });
@@ -851,7 +855,7 @@
                     }
                     flags.innerText = "🚩 : " + flagCount;
                 }
-                return;
+                cooldown = true;
             } else {
                 minesShuffled = false;
                 revealTile(target, clickedTile, true);
