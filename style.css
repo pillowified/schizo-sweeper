@@ -60,8 +60,8 @@ body.midnight-bg {
     animation: gradient 30s ease infinite;
 }
 
-body.green-bg {
-    background: linear-gradient(135deg, #d9fdd3, #c0ebc9, #a5d6a7, #81c784);
+body.darksky-bg {
+    background: linear-gradient(-45deg, #1e1830, #15072c, #0e0725, #0d1130, #030727, #0c062c);
     background-size: 400% 400%;
     animation: gradient 30s ease infinite;
 }
@@ -1115,8 +1115,8 @@ body.dream-bg {
     background: linear-gradient(-45deg, #20212b, #3a3b47, #5c5e70, #8f94b4);
 }
 
-#green-bg {
-    background: linear-gradient(-45deg, #d9fdd3, #c0ebc9, #a5d6a7, #81c784);
+#darksky-bg {
+    background: linear-gradient(-45deg, #1e1830, #15072c, #0e0725, #0d1130, #030727, #0c062c);
 }
 
 #dream-bg {
