@@ -397,7 +397,7 @@ body.dream-bg {
         min-width: 400px;
     }
 
-    #ye {
+    #ye, #ye2 {
         display: none;
     }
 
@@ -668,7 +668,7 @@ body.dream-bg {
         -ms-user-select: none;
     }
 
-    #ye {
+    #ye, #ye2 {
         display: none;
 	width: 50%;
         height: 50%;
