@@ -830,7 +830,7 @@
             let end = Date.now();
             version.innerText = end - starteer;
 
-            if (end - start < holdDuration) {
+            if (end - starteer < holdDuration) {
                 if (!clickedTile.isRevealed) {
                     if (clickedTile.isFlagged) {
                         clickedTile.isFlagged = false;
