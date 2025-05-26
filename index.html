@@ -828,6 +828,8 @@ const moveThreshold = 10; // pixels, adjust if needed
 gamefield.addEventListener("touchstart", function (event) {
     const target = event.target;
     if (!target.classList.contains("tile")) return;
+    
+    if (event.touches.length > 1) return;
 
     starteer = Date.now();
     suppressNextReveal = false;
