@@ -736,6 +736,10 @@
 
         function retry() {
             vignette.classList.remove("fadein");
+            const ye = document.getElementById("ye")
+                    ye.style.display = "none";
+            const ye2 = document.getElementById("ye2")
+                    ye2.style.display = "none";
             tiles.forEach(tile => {
                 tile.isFlagged = false;
                 tile.isRevealed = false;
