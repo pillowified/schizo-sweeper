@@ -582,6 +582,7 @@ body.dream-bg {
         font-size: small;
         translate: 0 -1rem;
         opacity: 0.5;
+	text-wrap: nowrap;
     }
     
     #left, #right {
@@ -1056,6 +1057,7 @@ body.dream-bg {
         font-size: small;
         translate: 0 -1rem;
         opacity: 0.5;
+	text-wrap: nowrap;
     }
     
     #left, #right {
