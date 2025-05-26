@@ -772,9 +772,9 @@
 
                     if (clickedTile.isRevealed || clickedTile.isFlagged) return;
 
-                    revealTile(event.target, clickedTile, true);
-
                     minesShuffled = false;
+
+                    revealTile(event.target, clickedTile, true);
                 }
             }
         });
@@ -868,8 +868,8 @@ gamefield.addEventListener("touchend", function (event) {
     const clickedTileId = target.dataset.id;
     const clickedTile = tiles.find(t => t.id === clickedTileId);
 
-    revealTile(target, clickedTile, true);
     shuffleMines = false;
+    revealTile(target, clickedTile, true);
 }, { passive: false });
 
 gamefield.addEventListener("touchcancel", function () {
