@@ -827,6 +827,9 @@
             const target = event.target;
             if (!target.classList.contains("tile")) return;
 
+            const clickedTileId = target.dataset.id;
+            const clickedTile = tiles.find(t => t.id === clickedTileId);
+
             let end = Date.now();
             version.innerText = end - starteer;
 
@@ -850,9 +853,6 @@
                 }
                 return;
             } else {
-                const clickedTileId = target.dataset.id;
-                const clickedTile = tiles.find(t => t.id === clickedTileId);
-
                 minesShuffled = false;
                 revealTile(target, clickedTile, true);
             }
