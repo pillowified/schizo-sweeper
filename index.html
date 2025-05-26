@@ -868,7 +868,7 @@ gamefield.addEventListener("touchend", function (event) {
     const clickedTileId = target.dataset.id;
     const clickedTile = tiles.find(t => t.id === clickedTileId);
 
-    shuffleMines = false;
+    minesShuffled = false;
     revealTile(target, clickedTile, true);
 }, { passive: false });
 
