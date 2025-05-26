@@ -723,21 +723,25 @@
                 cooldown = false;
             }, 500);
             vignette.classList.add("fadein");
-            const totalSafeTiles = tiles.filter(t => !t.isMine).length;
-            const unrevealedSafeTiles = tiles.filter(t => !t.isMine && !t.isRevealed).length;
 
-            if (condition) {
-                textCondition.innerText = "You WIN!";
-            } else {
-                textCondition.innerText = "You LOST!";
-                if (unrevealedSafeTiles == 1) {
-                    const ye2 = document.getElementById("ye2")
-                    ye2.style.display = "block";
-                } else if (unrevealedSafeTiles <= totalSafeTiles * 0.05) {
-                    const ye = document.getElementById("ye");
-                    ye.style.display = "block";
+            setTimeout(() => {
+                const totalSafeTiles = tiles.filter(t => !t.isMine).length;
+                const unrevealedSafeTiles = tiles.filter(t => !t.isMine && !t.isRevealed).length;
+
+                if (condition) {
+                    textCondition.innerText = "You WIN!";
+                } else {
+                    textCondition.innerText = "You LOST!";
+
+                    if (unrevealedSafeTiles === 1) {
+                        const ye2 = document.getElementById("ye2");
+                        ye2.style.display = "block";
+                    } else if (unrevealedSafeTiles <= totalSafeTiles * 0.05) {
+                        const ye = document.getElementById("ye");
+                        ye.style.display = "block";
+                    }
                 }
-            }
+            }, 50);
         }
 
         function retry() {
@@ -835,7 +839,7 @@
 
         let startX = 0;
 let startY = 0;
-const moveThreshold = 10; // pixels, adjust if needed
+const moveThreshold = 10;
 
 gamefield.addEventListener("touchstart", function (event) {
     const target = event.target;
