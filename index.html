@@ -821,17 +821,23 @@
         let suppressNextReveal = false;
         const holdDuration = 500;
 
-        gamefield.addEventListener("touchstart", function (event) {
-            const target = event.target;
-            if (!target.classList.contains("tile")) return;
+        let startX = 0;
+let startY = 0;
+const moveThreshold = 10; // pixels, adjust if needed
 
-            starteer = Date.now();
-            
-            suppressNextReveal = false;
+gamefield.addEventListener("touchstart", function (event) {
+    const target = event.target;
+    if (!target.classList.contains("tile")) return;
+
+    starteer = Date.now();
+    suppressNextReveal = false;
+
+    const touch = event.touches[0];
+    startX = touch.clientX;
+    startY = touch.clientY;
 
     holdTimer = setTimeout(() => {
         event.preventDefault();
-
         const clickedTileId = target.dataset.id;
         const clickedTile = tiles.find(t => t.id === clickedTileId);
 
@@ -842,14 +848,14 @@
                 target.classList.remove('flagged');
                 initializeBoard();
                 flagCount++;
-                suppressNextReveal = true;  // prevent reveal after unflag
+                suppressNextReveal = true;
             } else {
                 if (flagCount > 0) {
                     clickedTile.isFlagged = true;
                     target.textContent = "🚩";
                     target.classList.add('flagged');
                     flagCount--;
-                    suppressNextReveal = true; // also prevent reveal if flagging
+                    suppressNextReveal = true;
                 }
             }
             flags.innerText = "🚩 : " + flagCount;
@@ -857,7 +863,20 @@
 
         holdTimer = null;
     }, holdDuration);
-        });
+});
+
+gamefield.addEventListener("touchmove", function (event) {
+    if (!holdTimer) return;
+
+    const touch = event.touches[0];
+    const deltaX = Math.abs(touch.clientX - startX);
+    const deltaY = Math.abs(touch.clientY - startY);
+
+    if (deltaX > moveThreshold || deltaY > moveThreshold) {
+        clearTimeout(holdTimer);
+        holdTimer = null;
+    }
+});
 
         gamefield.addEventListener("touchend", function (event) {
 
