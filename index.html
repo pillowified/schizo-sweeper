@@ -856,6 +856,9 @@
                     flags.innerText = "🚩 : " + flagCount;
                 }
                 cooldown = true;
+                setTimeout(() => {
+                  cooldown = false;
+                }, 250);
             } else {
                 minesShuffled = false;
                 revealTile(target, clickedTile, true);
