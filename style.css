@@ -539,7 +539,7 @@ body.dream-bg {
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 2.5rem;
+        height: 20%
     }
 
     #mods-container h3 {
@@ -555,6 +555,7 @@ body.dream-bg {
         display: none;
         opacity: 0;
         transition: opacity 0.5s ease;
+        height: 100%;
     }
     
     #themes-container.fadein, #mods-container.fadein {
@@ -567,6 +568,8 @@ body.dream-bg {
         place-items: center;
         grid-template-columns: repeat(3, 1fr);
         row-gap: 1rem;
+        column-gap: 1rem;
+        height: 75%;
     }
     
     #mods {
@@ -583,6 +586,7 @@ body.dream-bg {
         width: 90%;
         justify-content: space-between;
         align-items: center;
+        font-size: 20px;
     }
 
     .darkened {
@@ -865,9 +869,12 @@ body.dream-bg {
     }
 
     #themes-container h3, #mods-container h3 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         text-align: center;
         font-size: 10px;
-        height: 1rem;
+        height: 20%;
     }
     
     #themes-container, #mods-container {
@@ -875,6 +882,7 @@ body.dream-bg {
         display: none;
         opacity: 0;
         transition: opacity 0.5s ease;
+        height: 100%;
     }
     
     #themes-container.fadein, #mods-container.fadein {
@@ -887,6 +895,7 @@ body.dream-bg {
         place-items: center;
         grid-template-columns: repeat(3, 1fr);
         row-gap: 0.5rem;
+        height: 75%;
     }
     
     #themes div {
@@ -896,6 +905,86 @@ body.dream-bg {
         border-radius: 50%;
         border: 0.2rem white solid;
         cursor: pointer;
+    }
+
+    #mods {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 80%;
+        width: 100%;   
+    }
+
+    #mods div {
+        display: flex;
+        width: 85%;
+        font-size: 10px;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* The switch - the box around the slider */
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 24px;
+        height: 14px;
+    }
+    
+    /* Hide default HTML checkbox */
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+    
+    /* The slider */
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+    
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 10px;
+        width: 10px;
+        left: 2px;
+        bottom: 2px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+    
+    input:checked + .slider {
+        background-color: #2196F3;
+    }
+    
+    input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+    }
+    
+    input:checked + .slider:before {
+        -webkit-transform: translateX(10px);
+        -ms-transform: translateX(10px);
+        transform: translateX(10px);
+    }
+    
+    /* Rounded sliders */
+    .slider.round {
+        border-radius: 34px;
+    }
+    
+    .slider.round:before {
+        border-radius: 50%;
     }
 
     #title {
