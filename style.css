@@ -931,6 +931,10 @@ body.dream-bg {
         align-items: center;
     }
 
+    .darkened {
+        color: gray;
+    }
+
     /* The switch - the box around the slider */
     .switch {
         position: relative;
