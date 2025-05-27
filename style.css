@@ -124,6 +124,13 @@ body.dream-bg {
     100% { rotate: 0deg; }
 }
 
+.tile {
+    -webkit-touch-callout: none;
+    user-select: none;
+    touch-action: none;
+  }
+  
+
 @media only screen and (min-width: 600px) {
     
     @keyframes smallerify {

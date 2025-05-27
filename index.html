@@ -104,7 +104,7 @@
                 </div>
             </div>
         </div>
-        <div id="version" class="unselectable">Schizo Sweeper ver. 0.15.01 by t0rtur</div>
+        <div id="version" class="unselectable">Schizo Sweeper ver. 0.15.02 by t0rtur</div>
     </div>
 
 
@@ -883,6 +883,8 @@
         let holdTimer = null;
         let suppressNextReveal = false;
         const holdDuration = 150;
+        let justFlagged = false;
+
 
         let startX = 0;
 let startY = 0;
@@ -924,9 +926,10 @@ gamefield.addEventListener("touchstart", function (event) {
                 }
             }
             flags.innerText = "🚩 : " + flagCount;
+            justFlagged = true;
         }
-
         holdTimer = null;
+
     }, holdDuration);
 });
 
@@ -956,6 +959,11 @@ gamefield.addEventListener("touchmove", function (event) {
             if (holdTimer) {
         clearTimeout(holdTimer);
         holdTimer = null;
+
+        if (justFlagged) {
+            justFlagged = false;
+            return;
+        }
 
         if (suppressNextReveal) {
             setTimeout(() => {
