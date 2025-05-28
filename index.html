@@ -111,7 +111,7 @@
                 </div>
             </div>
         </div>
-        <div id="version" class="unselectable">Schizo Sweeper ver. 0.15.03 by t0rtur</div>
+        <div id="version" class="unselectable">Schizo Sweeper ver. 0.15.04 by t0rtur</div>
     </div>
 
 
@@ -349,17 +349,19 @@
         ];
         localStorage.setItem("records", records);
 
+        const html = document.querySelector("html");
+
         if (localStorage.getItem('theme') != null) {
-            document.body.classList.add(localStorage.getItem('theme'));
+            html.classList.add(localStorage.getItem('theme'));
         } else {
-            document.body.classList.add("darksky-bg");
+            html.classList.add("darksky-bg");
             localStorage.setItem('theme', 'darksky-bg');
         }
 
         const themes = document.querySelector("#themes");
         themes.querySelectorAll("div").forEach(element => {
             element.addEventListener("click", e => {
-                document.body.className = e.target.id;
+                html.className = e.target.id;
                 localStorage.setItem('theme', e.target.id);
             })
         });

@@ -3,70 +3,75 @@
     margin: 0;
 }
 
-body {
+html {
     background-color: rgb(30, 30, 30);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: white;
+    width: 100%;
+    height: 100%;
+}
+
+body {
     overflow: hidden;
     width: 100vw;
     height: 100vh;
 }
 
-body.al-bg {
+html.al-bg {
     background: linear-gradient(-45deg, #0f2027, #162c38, #1e3c47, #284f60, #2a6575, #2c7d8d, #2f97a6, #36b2bf);
 	background-size: 400% 400%;
 	animation: gradient 30s ease infinite;
 }
 
-body.pastel-bg {
+html.pastel-bg {
     background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fbc2eb, #a18cd1);
 	background-size: 400% 400%;
 	animation: gradient 30s ease infinite;
 }
 
-body.strawberry-bg {
+html.strawberry-bg {
     background: linear-gradient(-45deg, #ff6e7f, #fddb92, #ffe47a, #fca17d);
     background-size: 400% 400%;
 	animation: gradient 30s ease infinite;
 }
 
-body.void-bg {
+html.void-bg {
     background: linear-gradient(-45deg, #1b1b2f, #3a3a5a, #5c5470, #a2678a, #c08497);
     background-size: 400% 400%;
 	animation: gradient 30s ease infinite;
 }
 
-body.arctic-bg {
+html.arctic-bg {
     background: linear-gradient(-45deg, #e0f7fa, #b2ebf2, #80deea, #4dd0e1, #26c6da, #00bcd4);
     background-size: 400% 400%;
     animation: gradient 30s ease infinite;
 }
 
-body.space-bg {
+html.space-bg {
     background: linear-gradient(-45deg, #c084fc, #a78bfa, #818cf8, #60a5fa, #38bdf8);
     background-size: 400% 400%;
     animation: gradient 30s ease infinite;
 }
 
-body.peachy-bg {
+html.peachy-bg {
     background: linear-gradient(-45deg, #ff9a8b, #ff6a88, #ff4365, #f13c68);
     background-size: 400% 400%;
     animation: gradient 30s ease infinite;
 }
 
-body.midnight-bg {
+html.midnight-bg {
     background: linear-gradient(-45deg, #20212b, #3a3b47, #5c5e70, #8f94b4);
     background-size: 400% 400%;
     animation: gradient 30s ease infinite;
 }
 
-body.darksky-bg {
+html.darksky-bg {
     background: linear-gradient(-45deg, #1e1830, #15072c, #0e0725, #0d1130, #030727, #0c062c);
     background-size: 400% 400%;
     animation: gradient 30s ease infinite;
 }
 
-body.dream-bg {
+html.dream-bg {
     background: linear-gradient(-45deg, #7ec8e3, #b2d8d8, #fdd9a0, #f7b267);
     background-size: 400% 400%;
     animation: gradient 30s ease infinite;
