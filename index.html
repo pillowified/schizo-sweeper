@@ -217,7 +217,6 @@
         const themescontainer = document.body.querySelector("#themes-container");
         const modscontainer = document.body.querySelector("#mods-container");
         const mods = document.body.querySelector("#mods");
-        const t44t = document.body.querySelector("#t44t");
 
         settingscog.addEventListener("click", () => {
             if (settingsmenubox.classList.contains("settingsMover")) {
@@ -382,7 +381,9 @@
                 modscontainer.querySelectorAll("*").forEach(element => {
                     element.classList.add("darkened");
                 });    
-                t44t.disabled = true;
+                document.querySelector("#mods").querySelectorAll("input").forEach(element => {
+                    element.disabled = true;
+                });
 
                 function fadeOut(timestamp) {
                 if (!start) start = timestamp;
@@ -771,7 +772,9 @@
             modscontainer.querySelectorAll("*").forEach(element => {
                     element.classList.remove("darkened");
                 });   
-            t44t.disabled = false;
+            document.querySelector("#mods").querySelectorAll("input").forEach(element => {
+                element.disabled = false;
+            });
 
             setTimeout(() => {
                 const totalSafeTiles = tiles.filter(t => !t.isMine).length;
@@ -800,7 +803,9 @@
                 modscontainer.querySelectorAll("*").forEach(element => {
                     element.classList.add("darkened");
                 });   
-                t44t.disabled = true;
+                document.querySelector("#mods").querySelectorAll("input").forEach(element => {
+                    element.disabled = true;
+                });
                 const ye = document.getElementById("ye")
                         ye.style.display = "none";
                 const ye2 = document.getElementById("ye2")
