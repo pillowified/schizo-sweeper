@@ -583,6 +583,7 @@ body.dream-bg {
         position: relative;
         display: flex;
         flex-direction: column;
+        gap: 5%;
         align-items: center;
         height: 80%;
         width: 100%;   
@@ -931,6 +932,7 @@ body.dream-bg {
         position: relative;
         display: flex;
         flex-direction: column;
+        gap: 5%;
         align-items: center;
         height: 80%;
         width: 100%;   
