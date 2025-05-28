@@ -850,7 +850,10 @@
 
         gamefield.addEventListener('contextmenu', function (event) {
             event.preventDefault();
-
+            if (event.pointerType === 'touch' || event.sourceCapabilities?.firesTouchEvents) {
+        event.preventDefault();
+        return;
+    }
             if (started) {
                 if (event.target.classList.contains('tile')) {
 
