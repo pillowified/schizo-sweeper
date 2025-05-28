@@ -725,6 +725,19 @@ body.dream-bg {
         }
     }
 
+    #title {
+        font-size: 35px;
+        animation: wiggle 30s ease-in-out infinite;
+        transition: transform 2s ease-in-out;
+        text-shadow: 0.5rem 0.5rem rgba(0, 0, 0, 0.1);
+	    text-wrap: nowrap;
+        z-index: 0;
+    }
+
+    #title.fader {
+        animation: fadein 2s ease, smallerify 2s ease;
+    }
+
     main {
         position: relative;
         top: 12.5vh;
