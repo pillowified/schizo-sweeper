@@ -790,7 +790,11 @@
         }
 
         function shuffleMines() {
-            const remainingTiles = tiles.filter(tile => !tile.isRevealed && !tile.isFlagged);
+            const remainingTiles = tiles.filter(tile => {
+                const el = document.querySelector(`[data-id="${tile.id}"]`);
+                return !tile.isRevealed && !tile.isFlagged && !(el && el.classList.contains("golden"));
+            });
+
             const minesToShuffle = remainingTiles.filter(tile => tile.isMine);
 
             remainingTiles.forEach(tile => tile.isMine = false);
