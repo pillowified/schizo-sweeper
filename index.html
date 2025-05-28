@@ -349,19 +349,17 @@
         ];
         localStorage.setItem("records", records);
 
-        const html = document.querySelector("html");
-
         if (localStorage.getItem('theme') != null) {
-            html.classList.add(localStorage.getItem('theme'));
+            document.body.classList.add(localStorage.getItem('theme'));
         } else {
-            html.classList.add("darksky-bg");
+            document.body.classList.add("darksky-bg");
             localStorage.setItem('theme', 'darksky-bg');
         }
 
         const themes = document.querySelector("#themes");
         themes.querySelectorAll("div").forEach(element => {
             element.addEventListener("click", e => {
-                html.className = e.target.id;
+                document.body.className = e.target.id;
                 localStorage.setItem('theme', e.target.id);
             })
         });
