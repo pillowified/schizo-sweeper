@@ -103,6 +103,7 @@
                         <h1 id="condition"></h1>
                         <img src="stare-dont-blink.gif" alt="ye" id="ye">
                         <img src="KanyeWest.png" alt="ye2" id="ye2">
+                        <img src="goldgoldgold.gif" alt="ohnee" id="ohne">
                         <div id="buttons">
                             <input id="retry" type="button" value="Retry" onclick="retry()">
                             <input id="back" type="button" value="Back" onclick="if (!cooldown) location.reload();">
@@ -111,7 +112,7 @@
                 </div>
             </div>
         </div>
-        <div id="version" class="unselectable">Schizo Sweeper ver. 0.15.04 by t0rtur</div>
+        <div id="version" class="unselectable">Schizo Sweeper ver. 0.15.11 by t0rtur</div>
     </div>
 
 
@@ -619,7 +620,10 @@
         let extend = false;
         let timer;
         const tileTimers = new Map();
+        const goldTimer = new Map();
 
+        const gold = document.querySelector("#gold");
+        let golded = false;
 
         function runTimer(tilesToShow) {
             tileTimers.forEach(timer => clearTimeout(timer));
@@ -643,6 +647,40 @@
 
                 tileTimers.set(t.id, timeout);
             });
+        }
+
+        function goldify() {
+                goldTimer.forEach(timer => clearTimeout(timer));
+                goldTimer.clear();
+                const filteredTiles = tiles.filter(tile => !tile.isRevealed && !tile.isFlagged && !tile.isMine);
+                const randomTile = filteredTiles[Math.floor(Math.random() * filteredTiles.length)];
+                const tElement = document.querySelector(`[data-id="${randomTile.id}"]`);
+                tElement.classList.add("golden");
+
+                const totalSafeTiles = tiles.filter(t => !t.isMine).length;
+                const unrevealedSafeTiles = tiles.filter(t => !t.isMine && !t.isRevealed).length;
+
+                const baseDelay = 3000;
+                const minDelay = 500;
+                const decayRate = 2.5;
+                const progress = 1 - (unrevealedSafeTiles / totalSafeTiles);
+                const delay = baseDelay - ((baseDelay - minDelay) * progress);
+
+                if (goldTimer.has(randomTile.id)) {
+                    clearTimeout(goldTimer.get(randomTile.id));
+                }
+
+                const timeout = setTimeout(() => {
+                    if (!randomTile.isRevealed) {
+                        started = false;
+                        golded = true;
+                        tElement.classList.remove("golden");
+                        endSequence(false);
+                    }
+                    goldTimer.delete(randomTile.id); 
+                }, delay);
+                console.log(delay)
+                goldTimer.set(randomTile.id, timeout);
         }
 
         const vignette = document.getElementById("vignette");
@@ -689,6 +727,10 @@
                 return;
             }
 
+            if (tileElement.classList.contains("golden")) {
+                tileElement.classList.remove("golden");
+            }
+
             if (checkWinCondition()) {
                 started = false;
                 endSequence(true);
@@ -709,8 +751,8 @@
 
             if (tile.minesAround === 0) {
                 tile.neighbors.forEach(neighbor => {
-                    if (neighbor && !neighbor.isRevealed && !neighbor.isFlagged && !neighbor.isMine) {
-                        const neighborElement = document.querySelector(`[data-id="${neighbor.id}"]`);
+                    const neighborElement = document.querySelector(`[data-id="${neighbor.id}"]`);
+                    if (neighbor && !neighbor.isRevealed && !neighbor.isFlagged && !neighbor.isMine && !neighborElement.classList.contains("golden")) {
                         revealTile(neighborElement, neighbor, false, true);
                     }
                 });
@@ -734,6 +776,14 @@
                         }
                     }
                 });
+
+                if (gold.checked) {
+                    if (!isRecursing) {
+                        if (Math.random() < 0.1) {
+                            goldify();
+                        }
+                    }
+                }
 
                 runTimer(tilesToShow);
             }
@@ -785,7 +835,12 @@
                 } else {
                     textCondition.innerText = "You LOST!";
 
-                    if (unrevealedSafeTiles === 1) {
+                    if (golded) {
+                        golded = false;
+                        const ohne = document.getElementById("ohne");
+                        ohne.style.display = "block";
+                    }
+                    else if (unrevealedSafeTiles === 1) {
                         const ye2 = document.getElementById("ye2");
                         ye2.style.display = "block";
                     } else if (unrevealedSafeTiles <= totalSafeTiles * 0.10) {
@@ -806,6 +861,8 @@
                 document.querySelector("#mods").querySelectorAll("input").forEach(element => {
                     element.disabled = true;
                 });
+                const ohne = document.getElementById("ohne")
+                        ohne.style.display = "none";
                 const ye = document.getElementById("ye")
                         ye.style.display = "none";
                 const ye2 = document.getElementById("ye2")
@@ -817,7 +874,6 @@
                     tile.neighbors = [];
                     tile.minesAround = null;
                 })
-                ye.style.display = "none";
                 const divs = document.getElementById("game-field");
                 divs.querySelectorAll("div").forEach(div => {
                     div.classList.remove("revealed", "mine", "flagged");

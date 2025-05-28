@@ -408,6 +408,10 @@ body.dream-bg {
 	height: 50%;
     }
 
+    #ohne {
+        display: none;
+    }
+
     #flags {
         width: 100px;
         height: 50px;
@@ -449,6 +453,10 @@ body.dream-bg {
     
     .tile.mine {
         background-color: rgba(255, 100, 100, 0.75);
+    }
+
+    .tile.golden {
+        background-color: rgba(255, 210, 0, 0.75);
     }
     
     #settings-cog:hover {
@@ -796,6 +804,10 @@ body.dream-bg {
         height: 35%;
     }
 
+    #ohne {
+        display: none;
+    }
+
     #version {
         position: fixed;
         font-size: 10px;
@@ -1130,6 +1142,10 @@ body.dream-bg {
     
     .tile.mine {
         background-color: rgba(255, 100, 100, 0.75);
+    }
+
+    .tile.golden {
+        background-color: rgba(255, 210, 0, 0.75);
     }
 
     #retry, #back, #start {
