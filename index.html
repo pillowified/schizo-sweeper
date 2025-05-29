@@ -649,19 +649,22 @@
             });
         }
 
+        let goldPlaced = false;
+
         function goldify() {
                 goldTimer.forEach(timer => clearTimeout(timer));
                 goldTimer.clear();
-                const filteredTiles = tiles.filter(tile => !tile.isRevealed && !tile.isFlagged && !tile.isMine);
+                const filteredTiles = tiles.filter(tile => tile.isRevealed);
                 const randomTile = filteredTiles[Math.floor(Math.random() * filteredTiles.length)];
                 const tElement = document.querySelector(`[data-id="${randomTile.id}"]`);
                 tElement.classList.add("golden");
+                goldPlaced = true;
 
                 const totalSafeTiles = tiles.filter(t => !t.isMine).length;
                 const unrevealedSafeTiles = tiles.filter(t => !t.isMine && !t.isRevealed).length;
 
                 const baseDelay = 3000;
-                const minDelay = 500;
+                const minDelay = 750;
                 const decayRate = 2.5;
                 const progress = 1 - (unrevealedSafeTiles / totalSafeTiles);
                 const delay = baseDelay - ((baseDelay - minDelay) * progress);
@@ -671,7 +674,7 @@
                 }
 
                 const timeout = setTimeout(() => {
-                    if (!randomTile.isRevealed) {
+                    if (goldPlaced) {
                         started = false;
                         golded = true;
                         tElement.classList.remove("golden");
@@ -778,7 +781,7 @@
                 });
 
                 if (gold.checked) {
-                    if (!isRecursing) {
+                    if (!goldPlaced) {
                         if (Math.random() < 0.1) {
                             goldify();
                         }
@@ -909,6 +912,10 @@
                     if (!suppressNextReveal) {
                         const clickedTileId = event.target.dataset.id;
                     const clickedTile = tiles.find(t => t.id === clickedTileId);
+
+                    if (event.target.classList.contains("golden")) {
+                        event.target.classList.remove("golden")
+                    }
 
                     if (clickedTile.isRevealed || clickedTile.isFlagged) return;
 
@@ -1051,6 +1058,10 @@ gamefield.addEventListener("touchmove", function (event) {
 
         const clickedTileId = target.dataset.id;
         const clickedTile = tiles.find(t => t.id === clickedTileId);
+
+        if (event.target.classList.contains("golden")) {
+                        event.target.classList.remove("golden")
+                    }
 
         if (clickedTile.isRevealed || clickedTile.isFlagged) return;
 
