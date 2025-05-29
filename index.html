@@ -674,7 +674,7 @@
                 }
 
                 const timeout = setTimeout(() => {
-                    if (goldPlaced) {
+                    if (goldPlaced && started) {
                         started = false;
                         golded = true;
                         tElement.classList.remove("golden");
@@ -889,6 +889,8 @@
     
                 tileTimers.forEach(timer => clearTimeout(timer));
                 tileTimers.clear();
+                goldTimer.forEach(timer => clearTimeout(timer));
+                goldTimer.clear();
                 tiles.forEach(t => {
                 const tElement = document.querySelector(`[data-id="${t.id}"]`);
                 if (!tElement) return;
@@ -899,6 +901,8 @@
     
                 tElement.textContent = '';});
                     
+                golded = false;
+                goldPlaced = false;
                 started = true;
                 firstClick = true;
     
