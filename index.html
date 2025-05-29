@@ -112,7 +112,7 @@
                 </div>
             </div>
         </div>
-        <div id="version" class="unselectable">Schizo Sweeper ver. 0.15.13 by t0rtur</div>
+        <div id="version" class="unselectable">Schizo Sweeper ver. 0.15.20 by t0rtur</div>
     </div>
 
 
@@ -652,39 +652,67 @@
         let goldPlaced = false;
 
         function goldify() {
-                goldTimer.forEach(timer => clearTimeout(timer));
-                goldTimer.clear();
-                const filteredTiles = tiles.filter(tile => tile.isRevealed);
-                const randomTile = filteredTiles[Math.floor(Math.random() * filteredTiles.length)];
-                const tElement = document.querySelector(`[data-id="${randomTile.id}"]`);
+            goldTimer.forEach(timer => clearTimeout(timer));
+            goldTimer.clear();
+
+            const filteredTiles = tiles.filter(tile => tile.isRevealed);
+            if (filteredTiles.length === 0) return;
+
+            const totalSafeTiles = tiles.filter(t => !t.isMine).length;
+            const unrevealedSafeTiles = tiles.filter(t => !t.isMine && !t.isRevealed).length;
+
+            const baseDelay = 5000;
+            const minDelay = 500;
+
+            const progress = 1 - (unrevealedSafeTiles / totalSafeTiles);
+            const delay = minDelay + ((baseDelay - minDelay) * progress);
+
+
+            const minGoldTiles = 1;
+            const maxGoldTiles = Math.min(10, Math.ceil(filteredTiles.length * 0.05));
+            const count = Math.floor(Math.random() * (maxGoldTiles - minGoldTiles + 1)) + minGoldTiles;
+
+            const chosenTiles = [];
+            while (chosenTiles.length < count) {
+                const tile = filteredTiles[Math.floor(Math.random() * filteredTiles.length)];
+                if (!chosenTiles.includes(tile)) {
+                    chosenTiles.push(tile);
+                }
+            }
+
+            chosenTiles.forEach(tile => {
+                const tElement = document.querySelector(`[data-id="${tile.id}"]`);
+                if (!tElement) return;
+
                 tElement.classList.add("golden");
                 goldPlaced = true;
 
-                const totalSafeTiles = tiles.filter(t => !t.isMine).length;
-                const unrevealedSafeTiles = tiles.filter(t => !t.isMine && !t.isRevealed).length;
-
-                const baseDelay = 3000;
-                const minDelay = 750;
-                const decayRate = 2.5;
-                const progress = 1 - (unrevealedSafeTiles / totalSafeTiles);
-                const delay = baseDelay - ((baseDelay - minDelay) * progress);
-
-                if (goldTimer.has(randomTile.id)) {
-                    clearTimeout(goldTimer.get(randomTile.id));
+                if (goldTimer.has(tile.id)) {
+                    clearTimeout(goldTimer.get(tile.id));
                 }
 
                 const timeout = setTimeout(() => {
+                    const tileElements = document.querySelectorAll('[data-id]');
+                    if (Array.from(tileElements).every(tile => !tile.classList.contains('golden'))) {
+                        goldPlaced = false;
+                    };
+
                     if (goldPlaced && started) {
-                        started = false;
-                        golded = true;
                         tElement.classList.remove("golden");
-                        endSequence(false);
+                        goldTimer.delete(tile.id);
+
+                        if (!golded) {
+                            golded = true;
+                            started = false;
+                            endSequence(false);
+                        }
                     }
-                    goldTimer.delete(randomTile.id); 
                 }, delay);
-                console.log(delay)
-                goldTimer.set(randomTile.id, timeout);
+                goldTimer.set(tile.id, timeout);
+            });
         }
+
+
 
         const vignette = document.getElementById("vignette");
 
@@ -919,7 +947,6 @@
 
                     if (event.target.classList.contains("golden")) {
                         event.target.classList.remove("golden")
-                        goldPlaced = false;
                     }
 
                     if (clickedTile.isRevealed || clickedTile.isFlagged) return;
@@ -1066,7 +1093,6 @@ gamefield.addEventListener("touchmove", function (event) {
 
         if (event.target.classList.contains("golden")) {
                         event.target.classList.remove("golden")
-                        goldPlaced = false;
                     }
 
         if (clickedTile.isRevealed || clickedTile.isFlagged) return;
