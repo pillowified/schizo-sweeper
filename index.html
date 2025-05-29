@@ -34,13 +34,13 @@
                 <div id="mods-container" style="width: 100%; height: 100%;">
                     <h3 class="unselectable">Mods</h3>
                     <div id="mods">
-                        <!-- <div>
+                        <div>
                             <label for="t44t-holder" class="unselectable">t44t Mode</label>
                             <label class="switch unselectable" id="t44t-holder">
                                 <input type="checkbox" id="t44t">
                                 <span class="slider round"></span>
                             </label>
-                        </div> -->
+                        </div>
                         <div>
                             <label for="gold-holder" class="unselectable">Golden Mode</label>
                             <label class="switch unselectable" id="gold-holder">
@@ -112,7 +112,7 @@
                 </div>
             </div>
         </div>
-        <div id="version" class="unselectable">Schizo Sweeper ver. 0.15.21 by t0rtur</div>
+        <div id="version" class="unselectable">Schizo Sweeper ver. 0.15.30 by t0rtur</div>
     </div>
 
 
@@ -218,6 +218,31 @@
         const themescontainer = document.body.querySelector("#themes-container");
         const modscontainer = document.body.querySelector("#mods-container");
         const mods = document.body.querySelector("#mods");
+        let modArray = [];
+
+        if (localStorage.getItem('mods') != null) {
+            modArray = JSON.parse(localStorage.getItem('mods'));
+            document.querySelector("#t44t").checked = modArray[0];
+            document.querySelector("#gold").checked = modArray[1];
+        } else {
+            modArray = [false, false];
+            localStorage.setItem('mods', JSON.stringify(modArray));
+        }
+
+        mods.addEventListener("change", function (event) {
+            if (event.target.tagName === "INPUT" && event.target.type === "checkbox") {
+                const input = event.target;
+                switch (input.id) {
+                    case "t44t":
+                        modArray[0] = input.checked;
+                        break;
+                    case "gold":
+                        modArray[1] = input.checked;
+                        break;
+                }
+                localStorage.setItem('mods', JSON.stringify(modArray));
+            }
+        });
 
         settingscog.addEventListener("click", () => {
             if (settingsmenubox.classList.contains("settingsMover")) {
@@ -314,8 +339,36 @@
                         sBox.innerHTML = "yo0";
                         break;
             }
+            localStorage.setItem('difficulty', selectedD);
         }
 
+        if (localStorage.getItem('difficulty') != null) {
+            selectedD = parseInt(localStorage.getItem('difficulty'));
+            switch (selectedD) {
+                case 1:
+                    dSelection.style.left = "0%";
+                    dData.innerHTML = "<div><div>Columns: </div><div>10</div></div><div><div>Rows: </div><div>8</div></div><div><div>Mines: </div><div>10</div></div>";
+                    sBox.innerHTML = "<div><h3>Games Played:</h3><div>0</div></div>";
+                    break;
+                case 2:
+                    dSelection.style.left = "25%";
+                    dData.innerHTML = "<div><div>Columns: </div><div>18</div></div><div><div>Rows: </div><div>14</div></div><div><div>Mines: </div><div>40</div></div>";
+                    sBox.innerHTML = "yo2";
+                    break;
+                case 3:
+                    dSelection.style.left = "50%";
+                    dData.innerHTML = "<div><div>Columns: </div><div>24</div></div><div><div>Rows: </div><div>20</div></div><div><div>Mines: </div><div>99</div></div>";
+                    sBox.innerHTML = "yo3";
+                    break;
+                case 0:
+                    dSelection.style.left = "75%";
+                    dData.innerHTML = "<div><h4 id='ad-info'>* max: 40 col, 25 row, 999 mine</h4>Columns: <input type='number' id='cc' class='cinput'></div><div>Rows: <input type='number' id='rc' class='cinput'></div><div>Mines: <input type='number' id='mc' class='cinput'></div>";
+                    sBox.innerHTML = "yo0";
+                    break;
+            }
+        } else {
+            localStorage.setItem('difficulty', selectedD);
+        }
         const dValues = {
             easy: {
                 columns: 10,
