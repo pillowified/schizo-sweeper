@@ -112,7 +112,7 @@
                 </div>
             </div>
         </div>
-        <div id="version" class="unselectable">Schizo Sweeper ver. 0.15.20 by t0rtur</div>
+        <div id="version" class="unselectable">Schizo Sweeper ver. 0.15.21 by t0rtur</div>
     </div>
 
 
@@ -810,8 +810,10 @@
 
                 if (gold.checked) {
                     if (!goldPlaced) {
-                        if (Math.random() < 0.1) {
-                            goldify();
+                        if (!isRecursing) {
+                            if (Math.random() < 0.1) {
+                                goldify();
+                            }
                         }
                     }
                 }
