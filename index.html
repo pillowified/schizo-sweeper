@@ -915,6 +915,7 @@
 
                     if (event.target.classList.contains("golden")) {
                         event.target.classList.remove("golden")
+                        goldPlaced = false;
                     }
 
                     if (clickedTile.isRevealed || clickedTile.isFlagged) return;
@@ -1061,6 +1062,7 @@ gamefield.addEventListener("touchmove", function (event) {
 
         if (event.target.classList.contains("golden")) {
                         event.target.classList.remove("golden")
+                        goldPlaced = false;
                     }
 
         if (clickedTile.isRevealed || clickedTile.isFlagged) return;
