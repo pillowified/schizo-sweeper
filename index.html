@@ -112,7 +112,7 @@
                 </div>
             </div>
         </div>
-        <div id="version" class="unselectable">Schizo Sweeper ver. 0.15.32 by t0rtur</div>
+        <div id="version" class="unselectable">Schizo Sweeper ver. 0.15.33 by t0rtur</div>
     </div>
 
 
@@ -870,8 +870,10 @@
 
                             console.log(probability);
 
-                            if (Math.random() < probability) {
-                                goldify();
+                            if (revealedTiles >= 10) {
+                                if (Math.random() < probability) {
+                                    goldify();
+                                }
                             }
 
                         }
@@ -945,7 +947,7 @@
                         ye.style.display = "block";
                     }
                 }
-            }, 50);
+            }, 0);
         }
 
         function retry() {
