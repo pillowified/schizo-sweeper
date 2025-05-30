@@ -934,19 +934,22 @@
                 if (condition) {
                     textCondition.innerText = "You WIN!";
                 } else {
-                    textCondition.innerText = "You LOST!";
-
                     if (golded) {
                         golded = false;
                         const ohne = document.getElementById("ohne");
                         ohne.style.display = "block";
+                        textCondition.innerText = "GOLD! GOLD! GOLD!";
                     }
                     else if (unrevealedSafeTiles === 1) {
                         const ye2 = document.getElementById("ye2");
                         ye2.style.display = "block";
+                        textCondition.innerText = "Brochacho lost the 50/50...";
                     } else if (unrevealedSafeTiles <= totalSafeTiles * 0.10) {
                         const ye = document.getElementById("ye");
                         ye.style.display = "block";
+                        textCondition.innerText = "You GOOFED!";
+                    } else {
+                        textCondition.innerText = "You LOST!";
                     }
                 }
             }, 0);

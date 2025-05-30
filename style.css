@@ -293,7 +293,7 @@ body.dream-bg {
         flex-direction: row;
         justify-content: center;
         gap: 50px;
-        width: 100%;
+        width: 60%;
     }
     
     #d-data {
@@ -384,7 +384,9 @@ body.dream-bg {
     }
 
     #vignette h1 {
-        font-size: 80px;
+        white-space: nowrap;
+        overflow: hidden;
+        font-size: clamp(40px, 20vw, 50px)
     }
 
     #vignette.fadein {
@@ -399,7 +401,7 @@ body.dream-bg {
         align-items: center;
         width: 25vw;
         height: 50vh;
-        min-width: 400px;
+        min-width: 800px;
     }
 
     #ye, #ye2 {
@@ -1088,7 +1090,9 @@ body.dream-bg {
     }
 
     #vignette h1 {
-        font-size: 40px;
+        white-space: nowrap;
+        overflow: hidden;
+        font-size: clamp(20px, 10vw, 30px)
     }
 
     #vignette.fadein {
