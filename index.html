@@ -866,7 +866,7 @@
                         if (!isRecursing) {
                             const totalSafeTiles = tiles.filter(t => !t.isMine).length;
                             const unrevealedSafeTiles = tiles.filter(t => !t.isMine && !t.isRevealed).length;
-                            console.log(unrevealedSafeTiles / totalSafeTiles)
+
                             if (Math.random() < (unrevealedSafeTiles / totalSafeTiles)) {
                                 goldify();
                             }
