@@ -112,7 +112,7 @@
                 </div>
             </div>
         </div>
-        <div id="version" class="unselectable">Schizo Sweeper ver. 0.15.31 by t0rtur</div>
+        <div id="version" class="unselectable">Schizo Sweeper ver. 0.15.32 by t0rtur</div>
     </div>
 
 
@@ -714,8 +714,8 @@
             const totalSafeTiles = tiles.filter(t => !t.isMine).length;
             const unrevealedSafeTiles = tiles.filter(t => !t.isMine && !t.isRevealed).length;
 
-            const baseDelay = 7500;
-            const minDelay = 750;
+            const baseDelay = 5000;
+            const minDelay = 500;
 
             const progress = 1 - (unrevealedSafeTiles / totalSafeTiles);
             const delay = minDelay + ((baseDelay - minDelay) * progress);
