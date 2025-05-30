@@ -112,7 +112,7 @@
                 </div>
             </div>
         </div>
-        <div id="version" class="unselectable">Schizo Sweeper ver. 0.15.32 by t0rtur</div>
+        <div id="version" class="unselectable">Schizo Sweeper ver. 0.15.31 by t0rtur</div>
     </div>
 
 
@@ -864,12 +864,16 @@
                 if (gold.checked) {
                     if (!goldPlaced) {
                         if (!isRecursing) {
-                            const totalSafeTiles = tiles.filter(t => !t.isMine).length;
-                            const unrevealedSafeTiles = tiles.filter(t => !t.isMine && !t.isRevealed).length;
+                            const totalTiles = tiles.length;
+                            const revealedTiles = tiles.filter(t => t.isRevealed).length;
+                            const probability = (totalTiles - revealedTiles) / totalTiles; // decreases as more tiles are revealed
 
-                            if (Math.random() < (unrevealedSafeTiles / totalSafeTiles)) {
-                                goldify();
+                            console.log(probability);
+
+                            if (Math.random() < probability) {
+                                goldify(); // only when you’re being shy~ just like meee~ 😖💛
                             }
+
                         }
                     }
                 }
