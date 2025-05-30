@@ -864,7 +864,10 @@
                 if (gold.checked) {
                     if (!goldPlaced) {
                         if (!isRecursing) {
-                            if (Math.random() < 0.1) {
+                            const totalSafeTiles = tiles.filter(t => !t.isMine).length;
+                            const unrevealedSafeTiles = tiles.filter(t => !t.isMine && !t.isRevealed).length;
+                            console.log(unrevealedSafeTiles / totalSafeTiles)
+                            if (Math.random() < (unrevealedSafeTiles / totalSafeTiles)) {
                                 goldify();
                             }
                         }
