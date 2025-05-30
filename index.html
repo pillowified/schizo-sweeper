@@ -112,7 +112,7 @@
                 </div>
             </div>
         </div>
-        <div id="version" class="unselectable">Schizo Sweeper ver. 0.15.31 by t0rtur</div>
+        <div id="version" class="unselectable">Schizo Sweeper ver. 0.15.32 by t0rtur</div>
     </div>
 
 
@@ -866,12 +866,12 @@
                         if (!isRecursing) {
                             const totalTiles = tiles.length;
                             const revealedTiles = tiles.filter(t => t.isRevealed).length;
-                            const probability = (totalTiles - revealedTiles) / totalTiles; // decreases as more tiles are revealed
+                            const probability = (totalTiles - revealedTiles) / totalTiles;
 
                             console.log(probability);
 
                             if (Math.random() < probability) {
-                                goldify(); // only when you’re being shy~ just like meee~ 😖💛
+                                goldify();
                             }
 
                         }
