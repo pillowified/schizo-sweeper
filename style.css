@@ -385,7 +385,7 @@ body.dream-bg {
     #vignette h1 {
         white-space: nowrap;
         overflow: hidden;
-        font-size: clamp(40px, 20vw, 50px)
+        font-size: clamp(25px, 20vw, 50px)
     }
 
     #vignette.fadein {
@@ -399,7 +399,7 @@ body.dream-bg {
         justify-content: space-evenly;
         align-items: center;
         width: 25vw;
-	height: 40vh;
+	height: 75vh;
 	max-height: 600px;
         min-width: 800px;
     }
@@ -1120,7 +1120,7 @@ body.dream-bg {
     #vignette h1 {
         white-space: nowrap;
         overflow: hidden;
-        font-size: clamp(20px, 10vw, 30px)
+        font-size: clamp(10px, 10vw, 30px)
     }
 
     #vignette.fadein {
