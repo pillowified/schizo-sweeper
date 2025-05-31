@@ -446,7 +446,7 @@ body.dream-bg {
     }
     
     #settings-cog {
-        top: 5vh;
+        top: 3.5rem;
         transition: transform 0.3s ease, translate 0.3s ease;
     }
     
@@ -467,21 +467,16 @@ body.dream-bg {
         cursor: pointer;
       }
     
-    #settings-menu {
-        width: 10rem;
-        height: 5rem;
-    }
-    
     #settings-menu.themes-page, #settings-menu.mods-page {
         width: 15rem;
         height: 15rem;
     }
     
     #settings-menu {
-        position: fixed;
-        top: 5vh;
-        left: -10.5rem;
-        transition: width 0.3s ease, height 0.3s ease;/* use the same one for both */
+        position: relative;
+        width: 100%;
+        height: 75%;
+        transition: width 0.3s ease, height 0.3s ease;
         background-color: rgba(0, 0, 0, 0.1);
         border-radius: 0.5rem;
         border: 0.2rem solid white;
@@ -501,9 +496,22 @@ body.dream-bg {
     
     }
     
-    #settings-menu-box {
+    #sc {
         position: fixed;
-        display: inline-block;
+        display: flex;
+        top: 0.5rem;
+        gap: 10px;
+        left: -10.5rem;
+        transition: transform 0.3s ease, translate 0.3s ease;
+        z-index: 50;
+    }
+
+    #settings-menu-box {
+        position: relative;
+        justify-content: space-between;
+        flex-direction: column;
+        width: 10rem;
+        height: 6rem;
         transition: transform 0.3s ease, translate 0.3s ease;
         z-index: 50;
     }
@@ -545,9 +553,10 @@ body.dream-bg {
     
     
     #settings-menu-box h2 {
-        position: absolute;
-        top: 5%;
-        left: -9.5rem;
+        position: relative;
+        left: 1rem;
+        height: 50%;
+        width: 100%;
     }
     
     #themes-container h3 {
@@ -744,6 +753,16 @@ body.dream-bg {
         z-index: 0;
     }
 
+    #sc {
+        position: fixed;
+        display: flex;
+        top: 0.5rem;
+        gap: 5px;
+        left: -8rem;
+        transition: transform 0.3s ease, translate 0.3s ease;
+        z-index: 50;
+    }
+
     #title.fader {
         animation: fadein 2s ease, smallerify 2s ease;
     }
@@ -753,7 +772,7 @@ body.dream-bg {
         top: 12.5vh;
         width: 75rem;
         height: 75vh;
-        display: flex;
+        display: inline-flex;
         justify-content: center;
         gap: 40px;
         align-items: center;
@@ -820,9 +839,11 @@ body.dream-bg {
     }
 
     #settings-cog {
+        top: 3.5rem;
+        position: relative;
+        padding: 8px;
         width: 16px;
         height: 16px;
-        top: 5vh;
         transition: transform 0.3s ease, translate 0.3s ease;
     }
 
@@ -832,20 +853,23 @@ body.dream-bg {
       }
     
     #settings-menu {
-        width: 6rem;
-        height: 3rem;
+        position: relative;
+        width: 100%;
+        height: 75%;
+        transition: width 0.3s ease, height 0.3s ease;
+        background-color: rgba(0, 0, 0, 0.1);
+        border-radius: 0.5rem;
+        border: 0.1rem solid white;
     }
     
     #settings-menu.themes-page {
-        width: 7.5rem;
+        width: 10rem;
         height: 7rem;
     }
     
     #settings-menu,
     #settings-menu.themes-page {
-        position: fixed;
-        top: 5vh;
-        left: -6.25rem;
+        position: relative;
         transition: width 0.3s ease, height 0.3s ease;/* use the same one for both */
         background-color: rgba(0, 0, 0, 0.1);
         border-radius: 0.5rem;
@@ -853,8 +877,11 @@ body.dream-bg {
     }
     
     #settings-menu-box {
-        position: fixed;
-        display: inline-block;
+        position: relative;
+        justify-content: space-between;
+        flex-direction: column;
+        width: 7.5rem;
+        height: 5rem;
         transition: transform 0.3s ease, translate 0.3s ease;
         z-index: 50;
     }
@@ -888,18 +915,19 @@ body.dream-bg {
     }
     
     .settingsMover {
-        translate: 5.75rem;
+        translate: 7.5rem;
     }
     
     .settingsMover-themes {
-        translate: 1.5rem;
+        translate: 2.5rem;
     }
     
     
     #settings-menu-box h2 {
-        position: fixed;
-        left: -5.5rem;
-        font-size: 16px;
+        position: relative;
+        left: 1rem;
+        height: 50%;
+        width: 100%;
     }
 
     #themes-container h3, #mods-container h3 {
