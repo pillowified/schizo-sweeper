@@ -109,7 +109,7 @@
                 </div>
             </div>
         </div>
-        <div id="version" class="unselectable">Schizo Sweeper ver. 0.15.43 by t0rtur</div>
+        <div id="version" class="unselectable">Schizo Sweeper ver. 0.15.44 by t0rtur</div>
     </div>
 
 
@@ -168,7 +168,16 @@
             title.style.transform = `translate(${x}px, ${y}px) rotate(${rotation}deg)`;
         }
 
-        setInterval(randomFloaty, 2000)
+        let lastUpdate = 0;
+        function throttledFloaty() {
+            const now = Date.now();
+            if (now - lastUpdate > 2000) {
+                lastUpdate = now;
+                randomFloaty();
+            }
+            requestAnimationFrame(throttledFloaty);
+        }
+        requestAnimationFrame(throttledFloaty);
 
         const left = document.body.querySelector("#left");
         const right = document.body.querySelector("#right");
@@ -186,10 +195,17 @@
 
             right.style.transform = `translate(${x}px, ${y}px) rotate(${rotation}deg)`;
         }
-        setTimeout(() => {
-            randomFloaties();
-        }, 100);
-        setInterval(randomFloaties, 4000)
+
+        let lastFloatyUpdate = 0;
+        function throttledFloaties() {
+            const now = Date.now();
+            if (now - lastFloatyUpdate > 4000) {
+                lastFloatyUpdate = now;
+                randomFloaties();
+            }
+            requestAnimationFrame(throttledFloaties);
+        }
+        requestAnimationFrame(throttledFloaties);
 
         const main = document.body.querySelector("main");
 
