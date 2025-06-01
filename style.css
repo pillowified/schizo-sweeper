@@ -147,16 +147,16 @@ body.dream-bg {
 
     main {
         position: relative;
-        top: 12.5vh;
-        width: 75rem;
-        height: 75vh;
         display: flex;
-        justify-content: space-evenly;
+        justify-content: center;
         align-items: center;
+        gap: 80px;
         flex-direction: column;
     }
     
     #main {
+        height: 100vh;
+        width: 100vw;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -773,9 +773,6 @@ body.dream-bg {
 
     main {
         position: relative;
-        top: 12.5vh;
-        width: 75rem;
-        height: 75vh;
         display: flex;
         justify-content: center;
         gap: 40px;
@@ -784,6 +781,8 @@ body.dream-bg {
     }
     
     #main {
+        height: 100vh;
+        width: 100vw;
         display: flex;
         justify-content: center;
         align-items: center;
