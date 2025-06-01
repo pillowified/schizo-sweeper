@@ -772,7 +772,7 @@ body.dream-bg {
         top: 12.5vh;
         width: 75rem;
         height: 75vh;
-        display: inline-flex;
+        display: flex;
         justify-content: center;
         gap: 40px;
         align-items: center;
