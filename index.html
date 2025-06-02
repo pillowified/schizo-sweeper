@@ -109,7 +109,7 @@
                 </div>
             </div>
         </div>
-        <div id="version" class="unselectable">Schizo Sweeper ver. 0.15.50 by t0rtur</div>
+        <div id="version" class="unselectable">Schizo Sweeper ver. 0.15.51 by t0rtur</div>
     </div>
 
 
@@ -732,6 +732,7 @@
         }
 
         let goldPlaced = false;
+        let called = false;
 
         function goldify() {
             goldTimer.forEach(timer => clearTimeout(timer));
@@ -793,16 +794,20 @@
                             endSequence(false);
                         }
                     } else if (!goldPlaced && started) {
-                        const minRecurDelay = 3000;
-                        const maxRecurDelay = 10000;
-                        const recurDelay = Math.floor(Math.random() * (maxRecurDelay - minRecurDelay + 1)) + minRecurDelay;
+                        if (Math.random() < (1 - progress)) {
+                            called = true;
 
-                        const repeat = setTimeout(() => {
-                            if (started && !golded) {
-                                goldify();
-                            }
-                        }, recurDelay);
-                        repeatTimer.set(tile.id, repeat);
+                            const minRecurDelay = 3000;
+                            const maxRecurDelay = 10000;
+                            const recurDelay = Math.floor(Math.random() * (maxRecurDelay - minRecurDelay + 1)) + minRecurDelay;
+
+                            const repeat = setTimeout(() => {
+                                if (started && !golded) {
+                                    goldify();
+                                }
+                            }, recurDelay);
+                            repeatTimer.set(tile.id, repeat);
+                        }
                     }
                 }, delay);
                 goldTimer.set(tile.id, timeout);
@@ -831,8 +836,6 @@
         function checkWinCondition() {
             return tiles.every(tile => tile.isMine || tile.isRevealed);
         }
-
-        let called = false;
 
         function revealTile(tileElement, tile, key, isRecursing = false) {
             clearTimeout(timer);
@@ -936,8 +939,14 @@
                                     goldify();
                                 }
                                 if (!called) {
-                                    called = true;
-                                    scheduleGoldify();
+                                    const totalSafeTiles = tiles.filter(t => !t.isMine).length;
+                                    const unrevealedSafeTiles = tiles.filter(t => !t.isMine && !t.isRevealed).length;
+
+                                    const progress = 1 - (unrevealedSafeTiles / totalSafeTiles);
+                                    if (Math.random() < (1 - progress)) {
+                                        called = true;
+                                        scheduleGoldify();
+                                    }
                                 }
                             }
 
