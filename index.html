@@ -109,7 +109,7 @@
                 </div>
             </div>
         </div>
-        <div id="version" class="unselectable">Schizo Sweeper ver. 0.15.46 by t0rtur</div>
+        <div id="version" class="unselectable">Schizo Sweeper ver. 0.15.50 by t0rtur</div>
     </div>
 
 
@@ -624,6 +624,7 @@
                      remainingMines--;
                 }
             }
+
             addNeighbors();
         }
 
@@ -653,6 +654,7 @@
                     }
                 })
                 }
+                
 
                 initializeBoard()
                 countNeighborMines();
@@ -689,6 +691,7 @@
         let timer;
         const tileTimers = new Map();
         const goldTimer = new Map();
+        const repeatTimer = new Map();
 
         const gold = document.querySelector("#gold");
         let golded = false;
@@ -733,6 +736,8 @@
         function goldify() {
             goldTimer.forEach(timer => clearTimeout(timer));
             goldTimer.clear();
+            repeatTimer.forEach(timer => clearTimeout(timer));
+            repeatTimer.clear();
 
             const filteredTiles = tiles.filter(tile => tile.isRevealed);
             if (filteredTiles.length === 0) return;
@@ -787,19 +792,47 @@
                             started = false;
                             endSequence(false);
                         }
+                    } else if (!goldPlaced && started) {
+                        const minRecurDelay = 3000;
+                        const maxRecurDelay = 10000;
+                        const recurDelay = Math.floor(Math.random() * (maxRecurDelay - minRecurDelay + 1)) + minRecurDelay;
+
+                        const repeat = setTimeout(() => {
+                            if (started && !golded) {
+                                goldify();
+                            }
+                        }, recurDelay);
+                        repeatTimer.set(tile.id, repeat);
                     }
                 }, delay);
                 goldTimer.set(tile.id, timeout);
             });
+            
         }
 
+        function scheduleGoldify() {
+            if (!gold.checked || golded || !started) return;
 
+            const minDelay = 3000;
+            const maxDelay = 10000;
+            const initialDelay = Math.floor(Math.random() * (maxDelay - minDelay + 1)) + minDelay;
+
+            const timeout = setTimeout(() => {
+                if (started && !golded) {
+                    goldify();
+                }
+            }, initialDelay);
+
+            repeatTimer.set('initial', timeout);
+        }
 
         const vignette = document.getElementById("vignette");
 
         function checkWinCondition() {
             return tiles.every(tile => tile.isMine || tile.isRevealed);
         }
+
+        let called = false;
 
         function revealTile(tileElement, tile, key, isRecursing = false) {
             clearTimeout(timer);
@@ -901,6 +934,10 @@
                             if (revealedTiles >= 10) {
                                 if (Math.random() < probability) {
                                     goldify();
+                                }
+                                if (!called) {
+                                    called = true;
+                                    scheduleGoldify();
                                 }
                             }
 
@@ -1014,6 +1051,8 @@
                 tileTimers.clear();
                 goldTimer.forEach(timer => clearTimeout(timer));
                 goldTimer.clear();
+                repeatTimer.forEach(timer => clearTimeout(timer));
+                repeatTimer.clear();
                 tiles.forEach(t => {
                 const tElement = document.querySelector(`[data-id="${t.id}"]`);
                 if (!tElement) return;
@@ -1028,6 +1067,7 @@
                 goldPlaced = false;
                 started = true;
                 firstClick = true;
+                called = false;
     
                 placeMines();
             }
