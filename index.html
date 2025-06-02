@@ -109,7 +109,7 @@
                 </div>
             </div>
         </div>
-        <div id="version" class="unselectable">Schizo Sweeper ver. 0.15.45 by t0rtur</div>
+        <div id="version" class="unselectable">Schizo Sweeper ver. 0.15.46 by t0rtur</div>
     </div>
 
 
@@ -748,7 +748,7 @@
 
 
             const minGoldTiles = 1;
-            const maxGoldTiles = Math.min(10, Math.ceil(filteredTiles.length * 0.05));
+            const maxGoldTiles = Math.min(10, Math.ceil(filteredTiles.length * 0.025));
             const clampedMax = Math.max(minGoldTiles, maxGoldTiles);
 
             const count = Math.floor(Math.random() * (clampedMax - minGoldTiles + 1)) + minGoldTiles;
