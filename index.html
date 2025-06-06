@@ -48,6 +48,13 @@
                                     <span class="slider round"></span>
                                 </label>
                             </div>
+                            <div>
+                                <label for="dementia-holder" class="unselectable">Dementia Mode</label>
+                                <label class="switch unselectable" id="dementia-holder">
+                                    <input type="checkbox" id="dementia">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -109,7 +116,7 @@
                 </div>
             </div>
         </div>
-        <div id="version" class="unselectable">Schizo Sweeper ver. 0.15.51 by t0rtur</div>
+        <div id="version" class="unselectable">Schizo Sweeper ver. 0.16.01 by t0rtur</div>
     </div>
 
 
@@ -238,6 +245,7 @@
             modArray = JSON.parse(localStorage.getItem('mods'));
             document.querySelector("#t44t").checked = modArray[0];
             document.querySelector("#gold").checked = modArray[1];
+            document.querySelector("#dementia").checked = modArray[2];
         } else {
             modArray = [false, false];
             localStorage.setItem('mods', JSON.stringify(modArray));
@@ -252,6 +260,9 @@
                         break;
                     case "gold":
                         modArray[1] = input.checked;
+                        break;
+                    case "dementia":
+                        modArray[2] = input.checked;
                         break;
                 }
                 localStorage.setItem('mods', JSON.stringify(modArray));
@@ -698,6 +709,8 @@
 
         const t44t = document.querySelector("#t44t");
 
+        const dementia = document.querySelector("#dementia");
+
         function runTimer(tilesToShow) {
             if (!t44t.checked) {
                 tileTimers.forEach(timer => clearTimeout(timer));
@@ -950,6 +963,37 @@
                                 }
                             }
 
+                        }
+                    }
+                }
+
+                
+                if (dementia.checked) {
+                    if (!isRecursing) {
+                        if (Math.random() < 0.1) {
+                            const filteredTiles = tiles.filter(tile => !tile.isRevealed && tile.isFlagged && tile.isMine);
+                            if (filteredTiles.length === 0) {
+                                runTimer(tilesToShow);
+                                return;
+                            }
+
+                            const totalSafeTiles = tiles.filter(t => !t.isMine).length;
+                            const unrevealedSafeTiles = tiles.filter(t => !t.isMine && !t.isRevealed).length;
+
+                            const tile = filteredTiles[Math.floor(Math.random() * filteredTiles.length)];
+
+                            if (tile.isMine) {
+                                tile.isMine = false;
+                                const safeTile = tiles.find(t => !t.isMine && !t.isRevealed && !t.isFlagged && t !== tile);
+                                if (safeTile) {
+                                    safeTile.isMine = true;
+                                }
+
+                                initializeBoard();
+                                countNeighborMines();
+
+                                tile.minesAround = tile.neighbors.filter(neighbor => neighbor && neighbor.isMine).length;
+                            }
                         }
                     }
                 }
