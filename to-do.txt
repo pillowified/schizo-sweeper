@@ -5,3 +5,4 @@ Things to add:
 - Working statistics
 - Leaderboard
 - Show all mines after losing
+- Add another div for the gamefield to add horizontal padding
