@@ -670,6 +670,7 @@ body.dream-bg {
         bottom: 1%;
         right: 1%;
         z-index: 999;
+	    text-align: right;
     }
 
     /* The switch - the box around the slider */
@@ -840,6 +841,7 @@ body.dream-bg {
         bottom: 1%;
         right: 1%;
         z-index: 999;
+	    text-align: right;
     }
 
     #settings-cog {
